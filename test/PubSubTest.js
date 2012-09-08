@@ -27,13 +27,13 @@ var PubSubTest = {
         var testContext = {
             testContextVar: testContextVar
         };
-        var testMessage = "my message";
+        var testData = "my message";
         var testTopic = 'test topic';
-        var testFunction = function(topic, message) {
+        var testFunction = function(message) {
             calledVar = true;
             _test.assertEqual(this.testContextVar, testContextVar, "Assert the subscriber function was called in the subscriber context");
-            _test.assertEqual(topic, testTopic, "Assert topic received was the topic published");
-            _test.assertEqual(message, testMessage, "Assert message received was the message published");
+            _test.assertEqual(message.getTopic(), testTopic, "Assert topic received was the topic published");
+            _test.assertEqual(message.getData(), testData, "Assert message received was the message published");
         };
 
 
@@ -42,7 +42,7 @@ var PubSubTest = {
         //-------------------------------------------------------------------------------
 
         pubSub.subscribe(testTopic, testFunction, testContext);
-        pubSub.publish(testTopic, testMessage);
+        pubSub.publish(testTopic, testData);
 
         this.assertTrue(calledVar, "Assert subscriber function was called.");
 

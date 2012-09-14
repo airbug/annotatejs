@@ -52,13 +52,35 @@ var EventDispatcherTest = {
         //-------------------------------------------------------------------------------
 
         var eventDispatcher = new EventDispatcher();
+        var testEventType = "testEventType";
+        var testEventData = "testEventData";
+        var testEvent = new Event(testEventType, testEventData);
 
+        var calledVar = false;
+        var testContextVar = "some value";
+        var _test = this;
+        var testListenerFunction = function(event) {
+            calledVar = true;
+            _test.assertEqual(this.testContextVar, testContextVar,
+                "Assert the listener function was called in the listener context");
+            _test.assertEqual(event.getType(), testEventType,
+                "Assert event type received was the event type published");
+            _test.assertEqual(event.getData(), testEventData,
+                "Assert event data received was the event data published");
+            _test.assertEqual(event.getTarget(), eventDispatcher,
+                "Assert event target is the dispatcher that dispatched the event");
+        };
+        var testListenerContext = {
+            testContextVar: testContextVar
+        };
 
 
         // Run Test
         //-------------------------------------------------------------------------------
 
-
+        eventDispatcher.addEventListener(testEventType, testListenerFunction, testListenerContext);
+        eventDispatcher.dispatchEvent(testEvent);
+        this.assertTrue(calledVar, "Assert listener function was called.");
 
     }).with('@Test("Simple add event listener and dispatch event test")')
 

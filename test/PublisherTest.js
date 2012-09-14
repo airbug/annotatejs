@@ -3,24 +3,24 @@
 //-------------------------------------------------------------------------------
 
 var annotate = require('../lib/Annotate').annotate;
-var PubSub = require('../lib/PubSub');
+var Publisher = require('../lib/Publisher');
 
 
 //-------------------------------------------------------------------------------
 // Declare Test
 //-------------------------------------------------------------------------------
 
-var PubSubTest = {
+var PublisherTest = {
     /**
      * This tests
      * 1) Subscribing to a topic.
      */
-    pubSubSubscribePublishTest: annotate(function() {
+    publisherSubscribePublishTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        var pubSub = new PubSub();
+        var publisher = new Publisher();
         var calledVar = false;
         var testContextVar = "some value";
         var _test = this;
@@ -31,9 +31,12 @@ var PubSubTest = {
         var testTopic = 'test topic';
         var testFunction = function(message) {
             calledVar = true;
-            _test.assertEqual(this.testContextVar, testContextVar, "Assert the subscriber function was called in the subscriber context");
-            _test.assertEqual(message.getTopic(), testTopic, "Assert topic received was the topic published");
-            _test.assertEqual(message.getData(), testData, "Assert message received was the message published");
+            _test.assertEqual(this.testContextVar, testContextVar,
+                "Assert the subscriber function was called in the subscriber context");
+            _test.assertEqual(message.getTopic(), testTopic,
+                "Assert message topic received was the message topic published");
+            _test.assertEqual(message.getData(), testData,
+                "Assert message data received was the message data published");
         };
 
 
@@ -41,12 +44,12 @@ var PubSubTest = {
         // Run Test
         //-------------------------------------------------------------------------------
 
-        pubSub.subscribe(testTopic, testFunction, testContext);
-        pubSub.publish(testTopic, testData);
+        publisher.subscribe(testTopic, testFunction, testContext);
+        publisher.publish(testTopic, testData);
 
         this.assertTrue(calledVar, "Assert subscriber function was called.");
 
-    }).with('@Test("PubSub subscribe and publish test")')
+    }).with('@Test("Publisher subscribe and publish test")')
 
 };
 
@@ -55,4 +58,4 @@ var PubSubTest = {
 // Module Export
 //-------------------------------------------------------------------------------
 
-module.exports = PubSubTest;
+module.exports = PublisherTest;

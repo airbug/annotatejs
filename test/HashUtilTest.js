@@ -49,15 +49,7 @@ var HashUtilTest = {
             });
         }
 
-    }).with('@Test("Hash repeat test")'),
-
-    /**
-     * This test ensures that different objects with the same values will hash to different values so that there is
-     * no collision in the map for different values in memory
-     */
-    hashDifferentObjectsWithSameValuesTest: annotate(function() {
-        //TODO BRN:
-    }).with('@Test("Hash different objects with same values test")')
+    }).with('@Test("Hash repeat test")')
 };
 
 

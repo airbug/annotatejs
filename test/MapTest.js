@@ -11,6 +11,32 @@ var Map = require('../lib/Map');
 //-------------------------------------------------------------------------------
 
 var MapTest = {
+
+    /**
+     *
+     */
+    mapContainsValueTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var map = new Map();
+        map.put('key1', 'value1');
+        map.put('key2', 'value2');
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertEqual(map.containsValue('value1'), true,
+            "Assert containsValue returns true for value1.");
+        this.assertEqual(map.containsValue('value2'), true,
+            "Assert containsValue returns true for value2.");
+        this.assertEqual(map.containsValue('value3'), false,
+            "Assert containsValue returns false for value that hasn't been added to the map.");
+
+    }).with('@Test("Map containsValue test")'),
+
     /**
      *
      */
@@ -74,6 +100,8 @@ var MapTest = {
 
 
     }).with('@Test("Map data type key test")')
+
+    //TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"
 };
 
 

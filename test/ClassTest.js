@@ -4,9 +4,9 @@
 
 var annotate = require('../lib/Annotate').annotate;
 var Class = require('../lib/Class');
-var IHashcode = require('../lib/IHashcode');
+var IHashCode = require('../lib/IHashCode');
 var Interface = require('../lib/Interface');
-var Obj = require('../lib/Object');
+var Obj = require('../lib/Obj');
 var TypeUtil = require('../lib/TypeUtil');
 
 
@@ -19,12 +19,12 @@ var ClassTest = {
     /**
      *
      */
-    declareTest: annotate(function() {
+    extendObjTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        var NewClass = Class.declare({
+        var NewClass = Class.extend(Obj, {
             someTestFunction1: function() {
 
             },
@@ -48,10 +48,10 @@ var ClassTest = {
             "Assert second function added to class is present in class instance");
         this.assertTrue(Class.doesExtend(instance, Obj),
             "Assert instance of new class extends base level Object class");
-        this.assertTrue(Class.doesImplement(instance, IHashcode),
-            "Assert instance of new class implements IHashcode");
+        this.assertTrue(Class.doesImplement(instance, IHashCode),
+            "Assert instance of new class implements IHashCode");
 
-    }).with('@Test("Class declare test")'),
+    }).with('@Test("Class extend Obj test")'),
 
     /**
      *
@@ -61,7 +61,7 @@ var ClassTest = {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        var ParentClass = Class.declare({
+        var ParentClass = Class.extend(Obj, {
             someTestFunction1: function() {
 
             },
@@ -116,7 +116,7 @@ var ClassTest = {
 
             }
         });
-        var TestClass = Class.declare({
+        var TestClass = Class.extend(Obj, {
             someInterfaceFunction: function() {
 
             },
@@ -136,7 +136,7 @@ var ClassTest = {
         this.assertTrue(TypeUtil.isFunction(TestClass.prototype.someInterfaceFunction),
             "Assert interface function added to class is function and is present in class prototype");
         this.assertEqual(TestClass.getInterfaces().length, 2,
-            "Assert we have 2 interfaces listed on TestClass (IHashcode and TestInterface)");
+            "Assert we have 2 interfaces listed on TestClass (IHashCode and TestInterface)");
         this.assertEqual(TestClass.getInterfaces()[1], TestInterface,
             "Assert test interface is listed in TestClass interfaces");
         this.assertTrue(TypeUtil.isFunction(instance.someFunction),

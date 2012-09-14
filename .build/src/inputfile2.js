@@ -38,7 +38,6 @@ var BlockCodeToken = Class.extend(Token, {
 
     toString: function() {
         var output = "[BlockCodeToken] {\n";
-        //TODO BRN: Give some way of viewing the characterListView
         output += "\ttype: " + this.type + "\n";
         output += "}\n";
         return output;

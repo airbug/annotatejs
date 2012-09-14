@@ -61,11 +61,6 @@ var AnnotateCompiler = Class.declare({
     //-------------------------------------------------------------------------------
     // Class Methods
     //-------------------------------------------------------------------------------
-
-    // TODO BRN: Annotate compiler should be able to have CompilerAnnotationProcessors added to it. Each processor
-    // should be labeled with a priority so that we can tell the order in which we should process. Each processor
-    // should process as a batch. Each processor should be passed the annotation along with the entire sourceTree.
-
     /**
      * @param {Set<SourcePath>} sourcePathSet
      * @param {Directory} outputDirectory
@@ -85,11 +80,6 @@ var AnnotateCompiler = Class.declare({
             var script = new Script(sourceTree, sourceFile);
             _this.application.addScript(script);
         });
-
-
-        // TODO BRN: Search through the source tree for annotate js annotations.
-        // TODO BRN: Create Annotation objects for each one
-        // TODO BRN: Pass each Annotation object to the CompilerAnnotationProcessors
 
         return this.application;
     }

@@ -76,8 +76,8 @@ var AnnotateCompiler = Class.declare({
         finalSourceFileSet.forEach(function(sourceFile) {
             var sourceString = sourceFile.getSource();
             var javascriptParser = new JavascriptParser();
-            var sourceTree = javascriptParser.parse(sourceString);
-            var script = new Script(sourceTree, sourceFile);
+            var sourceDocument = javascriptParser.parse(sourceString);
+            var script = new Script(sourceDocument, sourceFile);
             _this.application.addScript(script);
         });
 

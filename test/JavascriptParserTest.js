@@ -20,17 +20,20 @@ var JavascriptParserTest = {
         // Setup Test
         //-------------------------------------------------------------------------------
 
-        var sourceCode = "function someFunction() {}";
+        //TODO BRN: Need to create a fake file system for this test OR need to create an interface for retrieving source
+        // code so that we can provide a test source OR use sinon.mock.
+
+        /*var sourceFile = "function someFunction() {}";
         var javascriptParser = new JavascriptParser();
 
 
         // Run Test
         //-------------------------------------------------------------------------------
 
-        var sourceTree = javascriptParser.parse(sourceCode);
+        var sourceDocument = javascriptParser.parse();*/
 
 
-        //TODO BRN: Validate the sourceTree
+        //TODO BRN: Validate the sourceDocument
 
     }).with('@Test("Simple parse test")')
 };

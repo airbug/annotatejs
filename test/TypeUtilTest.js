@@ -4,7 +4,7 @@
 
 var annotate = require('../lib/Annotate').annotate;
 var TypeUtil = require('../lib/TypeUtil');
-var TypeValueSetsHelper = require('./TypeValueSetsHelper');
+var TypeValueSetsHelper = require('./helper/TypeValueSetsHelper');
 
 
 //-------------------------------------------------------------------------------

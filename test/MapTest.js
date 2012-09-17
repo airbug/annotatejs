@@ -15,7 +15,7 @@ var MapTest = {
     /**
      *
      */
-    mapContainsValueTest: annotate(function() {
+    mapSimplePutContainsValueTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -35,12 +35,12 @@ var MapTest = {
         this.assertEqual(map.containsValue('value3'), false,
             "Assert containsValue returns false for value that hasn't been added to the map.");
 
-    }).with('@Test("Map containsValue test")'),
+    }).with('@Test("Map simple put/containsValue test")'),
 
     /**
      *
      */
-    mapPutTest: annotate(function() {
+    mapSimplePutGetTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ var MapTest = {
 
         this.assertEqual(map.get('key1'), 'value1', "Assert value mapped to key is correct.");
 
-    }).with('@Test("Map put test")'),
+    }).with('@Test("Map simple put/get test")'),
 
     /**
      *
@@ -102,6 +102,7 @@ var MapTest = {
     }).with('@Test("Map data type key test")')
 
     //TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"
+    //TODO BRN: Add a remove test
 };
 
 

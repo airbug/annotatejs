@@ -19,3 +19,6 @@ npm-debug.log
 *.iml
 *.ipr
 *.iws
+
+#mac
+.DS_Store

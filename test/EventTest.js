@@ -11,6 +11,7 @@ var Event = require('../lib/Event');
 //-------------------------------------------------------------------------------
 
 var EventTest = {
+
     /**
      * This tests
      * 1) Instantiation of a new Event
@@ -29,12 +30,16 @@ var EventTest = {
         // Run Test
         //-------------------------------------------------------------------------------
 
-        this.assertEqual(event.getType(), testType,
-            "Assert event type was set correctly during instantiation");
+        this.assertEqual(event.getBubbles(), true,
+            "Assert event bubbles by default after instantiation");
         this.assertEqual(event.getData(), testData,
             "Assert event data was set correctly during instantiation");
-        this.assertEqual(event.getTarget(), null,
-            "Assert target is null after instantiation");
+        this.assertEqual(event.isPropagationStopped(), false,
+            "Assert propagation is not stopped by default");
+        this.assertEqual(event.getTarget(), undefined,
+            "Assert target is undefined after instantiation");
+        this.assertEqual(event.getType(), testType,
+            "Assert event type was set correctly during instantiation");
 
     }).with('@Test("Event instantiation test")')
 };

@@ -43,7 +43,33 @@ var PublisherSubscriptionTest = {
             "Assert subscriptions with the same function, context, and topic are equal");
 
 
-    }).with('@Test("Subscription equality test")')
+    }).with('@Test("Subscription equality test")'),
+
+    /**
+     * This tests
+     * 1) That subscriptions with the same function, context, and topic have the same hash code
+     */
+    subscriptionHashCodeEqualityTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var testFunction = function() {};
+        var tesObject = {};
+        var testTopic = "topic1";
+
+        var publisherSubscription1 = new PublisherSubscription(testTopic, testFunction, tesObject);
+        var publisherSubscription2 = new PublisherSubscription(testTopic, testFunction, tesObject);
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertEqual(publisherSubscription1.hashCode(), publisherSubscription2.hashCode(),
+            "Assert subscriptions with the same function, context, and topic have equal hash codes");
+
+
+    }).with('@Test("Subscription hash code equality test")')
 };
 
 

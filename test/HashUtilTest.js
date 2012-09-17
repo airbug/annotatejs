@@ -4,7 +4,7 @@
 
 var annotate = require('../lib/Annotate').annotate;
 var HashUtil = require('../lib/HashUtil');
-var TypeValueSetsHelper = require('./TypeValueSetsHelper');
+var TypeValueSetsHelper = require('./helper/TypeValueSetsHelper');
 
 
 //-------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ var HashUtilTest = {
             typeValueSet.forEach(function(typeValue) {
                 var repeatHash = HashUtil.hash(typeValue.value);
                 var expectedHash = hashValues[typeValue.name];
-                _this.assertEqual(repeatHash, expectedHash, "Ensure hash of " + typeValue.name + " " + typeValue.value +
+                _this.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + typeValue.value +
                     " is the same when it is hashed repeatedly.");
             });
         }

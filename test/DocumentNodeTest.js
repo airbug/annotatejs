@@ -15,10 +15,11 @@ var DocumentNodeTest = {
     /**
      * This tests
      * 1) Instantiation of a new DocumentNode
-     * 2) That the parent of the node is null after instantiation
+     * 2) That the parent of the node is undefined after instantiation
      * 3) That the childNodes is an empty List after instantiation
+     * 4) That thw ownerDocument is undefined after instantiation
      */
-    instantiateDocumentNodeTest: annotate(function() {
+    documentNodeInstantiationTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------

@@ -12,6 +12,103 @@ var DocumentNode = require('../lib/DocumentNode');
 //-------------------------------------------------------------------------------
 
 var DocumentTest = {
+
+    /**
+     * This tests
+     * 1) Instantiation of a new Document
+     * 2) That the parent of the node is null after instantiation
+     * 3) That the childNodes is an empty List after instantiation
+     */
+    documentInstantiationTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var document = new Document();
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertEqual(document.getParentNode(), undefined,
+            "Assert Document parent was set correctly during instantiation");
+        this.assertEqual(document.getOwnerDocument(), undefined,
+            "Assert Document owner document was set correctly during instantiation");
+        this.assertEqual(document.getParentDispatcher(), undefined,
+            "Assert Document parent dispatcher was set correctly during instantiation");
+        this.assertEqual(document.getChildNodes().isEmpty(), true,
+            "Assert Document childNodes is empty after instantiation");
+
+    }).with('@Test("Document instantiation test")'),
+
+    /**
+     * This tests
+     * 1) Adding a child DocumentNode to a Document
+     * 2) That the ownerDocument of a child is set correctly.
+     */
+    documentAddChildNodeTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var document = new Document();
+        var documentNode = new DocumentNode();
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        document.addChildNode(documentNode);
+
+        this.assertEqual(document.getParentNode(), undefined,
+            "Assert Document parent is still undefined after adding a child");
+        this.assertEqual(document.getOwnerDocument(), undefined,
+            "Assert Document ownerDocument is still undefined after adding a child");
+        this.assertEqual(document.getParentDispatcher(), undefined,
+            "Assert Document parentDispatcher is still undefined after adding a child");
+        this.assertEqual(document.getChildNodes().getCount(), 1,
+            "Assert Document childNodes has one child after adding a child");
+        this.assertEqual(document.getChildNodes().contains(documentNode), true,
+            "Assert Document childNodes contains the child that was added");
+        this.assertEqual(documentNode.getParentNode(), document,
+            "Assert DocumentNode parentNode is now the document");
+        this.assertEqual(documentNode.getOwnerDocument(), document,
+            "Assert DocumentNode ownerDocument is now the document");
+        this.assertEqual(documentNode.getParentDispatcher(), document,
+            "Assert DocumentNode parentDispatcher is now the document");
+
+    }).with('@Test("Document addChildNode test")'),
+
+    /**
+     * This tests
+     * 1) Adding a child DocumentNode that already has children to a Document
+     * 2) That the ownerDocument of all children is set correctly
+     */
+    documentAddChildNodeWithChildrenTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var document = new Document();
+        var documentNode = new DocumentNode();
+        var documentNodeChild = new DocumentNode();
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        //NOTE BRN: Add the child first before adding it to the document
+
+        documentNode.addChildNode(documentNodeChild);
+        document.addChildNode(documentNode);
+
+        this.assertEqual(documentNode.getOwnerDocument(), document,
+            "Assert DocumentNode ownerDocument is now the document");
+        this.assertEqual(documentNodeChild.getOwnerDocument(), document,
+            "Assert DocumentNode's child's ownerDocument is now the document");
+
+    }).with('@Test("Document addChildNode with children test")'),
+
     /**
      * This tests
      * 1) Walking a document

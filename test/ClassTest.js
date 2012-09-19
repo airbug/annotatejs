@@ -19,7 +19,7 @@ var ClassTest = {
     /**
      *
      */
-    extendObjTest: annotate(function() {
+    classExtendObjTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -56,7 +56,7 @@ var ClassTest = {
     /**
      *
      */
-    extendTest: annotate(function() {
+    classExtendTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -106,7 +106,7 @@ var ClassTest = {
     /**
      *
      */
-    implementTest: annotate(function() {
+    classImplementTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -150,7 +150,79 @@ var ClassTest = {
         this.assertTrue(Class.doesImplement(instance, TestInterface),
             "Assert Class.doesImplement returns true for instance implementing TestInterface");
 
-    }).with('@Test("Class implement test")')
+    }).with('@Test("Class implement test")'),
+
+    /**
+     *
+     */
+    classDoesImplementTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var TestInterface = Interface.declare({
+            someInterfaceFunction: function() {
+
+            }
+        });
+        var TestClass = Class.extend(Obj, {
+            someInterfaceFunction: function() {
+
+            },
+            someFunction: function() {
+
+            }
+        });
+        Class.implement(TestClass, TestInterface);
+        var instance = new TestClass();
+        var valuesThatDoNotImplement = [
+            {},
+            [],
+            function() {},
+            "some string",
+            12345
+        ];
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertEqual(Class.doesImplement(instance, TestInterface), true,
+            "Assert that and instance of our test class does implement the test interface");
+        var _this = this;
+        valuesThatDoNotImplement.forEach(function(value) {
+            _this.assertEqual(Class.doesImplement(value, TestInterface), false,
+                "Assert that the value '" + value + "' does not implement the test interface");
+        });
+    }).with('@Test("Class doesImplement test")'),
+
+    /**
+     *
+     */
+    classConstructorTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var constructorCalled = false;
+        var _test = this;
+        var TestClass = Class.extend(Obj, {
+            _constructor: function() {
+                constructorCalled = true;
+                _test.assertEqual(this.getClass(), TestClass,
+                    "Assert that the class is available during construction");
+            }
+        });
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        var instance = new TestClass();
+        this.assertEqual(constructorCalled, true,
+            "Assert that the constructor was called during instantiation");
+
+    }).with('@Test("Class constructor test")')
 };
 
 

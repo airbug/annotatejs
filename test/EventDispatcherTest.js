@@ -19,7 +19,7 @@ var EventDispatcherTest = {
      * 2) That the dispatcher target is set to itself if no target is passed in during instantiation
      * 3) That the dispatcher target is set to the value passed in during instantiation
      */
-    instantiateEventDispatcherTest: annotate(function() {
+    eventDispatcherInstantiationTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -40,7 +40,7 @@ var EventDispatcherTest = {
             "Assert dispatcher target is set to the target passed in during instantiation");
 
 
-    }).with('@Test("Instantiate an EventDispatcher test")'),
+    }).with('@Test("EventDispatcher instantiation test")'),
 
 
     /**
@@ -48,7 +48,7 @@ var EventDispatcherTest = {
      * 1) Adding and event listener
      * 2) Dispatching a simple event
      */
-    simpleAddEventListenerDispatchEventTest: annotate(function() {
+    eventDispatcherSimpleAddEventListenerDispatchEventTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -84,7 +84,7 @@ var EventDispatcherTest = {
         eventDispatcher.dispatchEvent(testEvent);
         this.assertTrue(calledVar, "Assert listener function was called.");
 
-    }).with('@Test("Simple add event listener and dispatch event test")'),
+    }).with('@Test("EventDispatcher simple add event listener and dispatch event test")'),
 
     /**
      * This tests

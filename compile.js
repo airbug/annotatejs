@@ -5,7 +5,7 @@ var startTime = (new Date()).getTime();
 // Requires
 //-------------------------------------------------------------------------------
 
-var AnnotateCompiler = require('./lib/compiler/AnnotateCompiler');
+var ClientAnnotateCompiler = require('./lib/compiler/ClientAnnotateCompiler');
 
 
 //-------------------------------------------------------------------------------
@@ -16,7 +16,8 @@ var AnnotateCompiler = require('./lib/compiler/AnnotateCompiler');
 var projectDir = process.cwd();
 var sourcePaths = [projectDir + "/.build/src"];
 var outputPath = projectDir + "/.build/out";
-AnnotateCompiler.compile(sourcePaths, outputPath);
+var outputFileName = "app.js";
+ClientAnnotateCompiler.compile(sourcePaths, outputPath, outputFileName);
 
 var endTime = (new Date()).getTime();
 console.log("Compilation completed in " + (endTime - startTime) + "ms");

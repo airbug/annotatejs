@@ -53,7 +53,7 @@ function requireModulesFromDirectory(directoryPathString) {
  */
 function scanDirectoryForSourceFiles(directoryPathString, scanRecursively) {
     console.log("scanning directory for tests - " + directoryPathString);
-    if (scanRecursively !== undefined) {
+    if (scanRecursively === undefined) {
         scanRecursively = true;
     }
     var sourcePathList = new List();

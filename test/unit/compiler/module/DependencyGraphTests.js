@@ -136,6 +136,13 @@ var DependencyGraphTests = {
                 new List(), new Set());
         });
 
+        var testProcessedNodeSet = new Set();
+        testProcessedNodeSet.add(testDependencyGraph.getNode(mockScriptC));
+        this.assertNotThrows(function() {
+            testDependencyGraph.processDependentOrderRecursive(testDependencyGraph.getNode(mockScriptA), testProcessedNodeSet,
+                new List(), new Set());
+        });
+
     }).with('@Test("DependencyGraph node A depends on node B and C AND node B depends on node C test")')
 };
 

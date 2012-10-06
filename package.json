@@ -1,5 +1,5 @@
 {
-    "name": "annotate",
+    "name": "annotatejs",
     "version": "0.0.1",
     "main": "./lib/Annotate",
     "private": true

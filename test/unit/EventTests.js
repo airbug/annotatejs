@@ -17,7 +17,7 @@ var EventTests = {
      * 1) Instantiation of a new Event
      * 2) That the "target" value is null after instantiation since the target is set when the event is dispatched
      */
-    instantiateEventTest: annotate(function() {
+    eventInstantiationTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------

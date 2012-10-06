@@ -2,12 +2,10 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../../lib/Annotate').annotate;
-var Class = require('../../../../lib/Class');
-var DependencyEdge = require('../../../../lib/compiler/module/DependencyEdge');
-var DependencyNode = require('../../../../lib/compiler/module/DependencyNode');
-var ExportCode = require('../../../../lib/compiler/module/ExportCode');
-var RequireCode = require('../../../../lib/compiler/module/RequireCode');
+var annotate = require('../../../../../lib/Annotate').annotate;
+var Class = require('../../../../../lib/Class');
+var DependencyEdge = require('../../../../../lib/compiler/module/dependency/DependencyEdge');
+var DependencyNode = require('../../../../../lib/compiler/module/dependency/DependencyNode');
 
 
 //-------------------------------------------------------------------------------

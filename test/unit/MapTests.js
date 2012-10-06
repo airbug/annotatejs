@@ -3,6 +3,8 @@
 //-------------------------------------------------------------------------------
 
 var annotate = require('../../lib/Annotate').annotate;
+var Class = require('../../lib/Class');
+var Collection = require('../../lib/Collection');
 var Map = require('../../lib/Map');
 
 
@@ -35,7 +37,7 @@ var MapTests = {
         this.assertEqual(map.containsValue('value3'), false,
             "Assert containsValue returns false for value that hasn't been added to the map.");
 
-    }).with('@Test("Map simple put/containsValue test")'),
+    }).with('@Test("Map - simple put/containsValue test")'),
 
     /**
      *
@@ -54,7 +56,64 @@ var MapTests = {
 
         this.assertEqual(map.get('key1'), 'value1', "Assert value mapped to key is correct.");
 
-    }).with('@Test("Map simple put/get test")'),
+    }).with('@Test("Map - simple put/get test")'),
+
+    /**
+     * This tests..
+     * 1) That the getKeyCollection method successfully returns a Collection
+     * 2) That the getKeyCollection method of an empty Map returns an empty Collection
+     */
+    mapGetKeyCollectionOnEmptyMapTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var map = new Map();
+        var emptyKeyCollection = map.getKeyCollection();
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertTrue(Class.doesExtend(emptyKeyCollection, Collection),
+            "Assert getKeyCollection returned a Collection when called on an empty Map");
+        this.assertEqual(emptyKeyCollection.getCount(), 0,
+            "Assert key Collection count is 0");
+
+    }).with('@Test("Map - getKeyCollection called on an empty Map test")'),
+
+    /**
+     * This tests..
+     * 1) That the getKeyCollection method successfully returns a Collection
+     * 2) That the getKeyCollection method of an empty Map returns a map with all of the Map's keys
+     */
+    mapGetKeyCollectionTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var map = new Map();
+        map.put('key1', 'value1');
+        map.put('key2', 'value2');
+        map.put('key3', 'value3');
+        var keyCollection = map.getKeyCollection();
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertTrue(Class.doesExtend(keyCollection, Collection),
+            "Assert getKeyCollection returned a Collection");
+        this.assertEqual(keyCollection.getCount(), 3,
+            "Assert key Collection count is 3");
+        this.assertEqual(keyCollection.contains('key1'), true,
+            "Assert key Collection contains key1");
+        this.assertEqual(keyCollection.contains('key2'), true,
+            "Assert key Collection contains key2");
+        this.assertEqual(keyCollection.contains('key3'), true,
+            "Assert key Collection contains key3");
+
+    }).with('@Test("Map - getKeyCollection test")'),
 
     /**
      *
@@ -99,7 +158,7 @@ var MapTests = {
         this.assertFalse(map.containsKey([]), "Assert that different plain javascript arrays are treated as different keys.");
 
 
-    }).with('@Test("Map data type key test")')
+    }).with('@Test("Map - data type key test")')
 
     //TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"
     //TODO BRN: Add a remove test

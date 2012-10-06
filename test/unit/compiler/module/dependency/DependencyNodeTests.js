@@ -2,9 +2,9 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../../lib/Annotate').annotate;
-var Class = require('../../../../lib/Class');
-var DependencyNode = require('../../../../lib/compiler/module/DependencyNode');
+var annotate = require('../../../../../lib/Annotate').annotate;
+var Class = require('../../../../../lib/Class');
+var DependencyNode = require('../../../../../lib/compiler/module/dependency/DependencyNode');
 
 
 //-------------------------------------------------------------------------------

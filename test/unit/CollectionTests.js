@@ -57,7 +57,7 @@ var CollectionTests = {
     /**
      *
      */
-    collectionGetValuesTest: annotate(function() {
+    collectionGetValueArrayTest: annotate(function() {
 
         // Setup Test
         //-------------------------------------------------------------------------------
@@ -72,13 +72,13 @@ var CollectionTests = {
         collection.add('value2');
         collection.add('value3');
 
-        var valuesArray = collection.getValues();
+        var valuesArray = collection.getValueArray();
 
-        this.assertEqual(valuesArray[0], 'value1', "Assert array[0] from getValues call is value1");
-        this.assertEqual(valuesArray[1], 'value2', "Assert value[1] from getValues call is value2");
-        this.assertEqual(valuesArray[2], 'value3', "Assert value[2] from getValues call is value3");
+        this.assertEqual(valuesArray[0], 'value1', "Assert array[0] from getValueArray call is value1");
+        this.assertEqual(valuesArray[1], 'value2', "Assert value[1] from getValueArray call is value2");
+        this.assertEqual(valuesArray[2], 'value3', "Assert value[2] from getValueArray call is value3");
 
-    }).with('@Test("Collection get values test")'),
+    }).with('@Test("Collection getValueArray test")'),
 
     /**
      *

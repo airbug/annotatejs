@@ -2,11 +2,11 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../../lib/Annotate').annotate;
-var Class = require('../../../../lib/Class');
-var DependencyGraph = require('../../../../lib/compiler/module/DependencyGraph');
-var List = require('../../../../lib/List');
-var Set = require('../../../../lib/Set');
+var annotate = require('../../../../../lib/Annotate').annotate;
+var Class = require('../../../../../lib/Class');
+var DependencyGraph = require('../../../../../lib/compiler/module/dependency/DependencyGraph');
+var List = require('../../../../../lib/List');
+var Set = require('../../../../../lib/Set');
 
 
 //-------------------------------------------------------------------------------

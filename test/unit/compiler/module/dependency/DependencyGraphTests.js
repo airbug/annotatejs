@@ -143,7 +143,47 @@ var DependencyGraphTests = {
                 new List(), new Set());
         });
 
-    }).with('@Test("DependencyGraph node A depends on node B and C AND node B depends on node C test")')
+    }).with('@Test("DependencyGraph node A depends on node B and C AND node B depends on node C test")'),
+
+    /**
+     * This tests
+     * 1) Getting an export name when the script does not have an export code applied
+     * 2) Getting an export name when the dependency graph does not have the script added
+     */
+    dependencyGraphGetScriptExportNameTest: annotate(function() {
+
+        // Setup Test
+        //-------------------------------------------------------------------------------
+
+        var testDependencyGraph = new DependencyGraph();
+        var mockScriptA = {value:"ValueA"};
+        var mockScriptB = {value:"ValueB"};
+        var mockScriptC = {value:"ValueC"};
+        var mockExportA = {
+            getExportName: function() {
+                return "nodeA";
+            },
+            getScript: function() {
+                return mockScriptA;
+            }
+        };
+
+        testDependencyGraph.addScript(mockScriptA);
+        testDependencyGraph.addScript(mockScriptB);
+        testDependencyGraph.addExportCode(mockExportA);
+
+
+        // Run Test
+        //-------------------------------------------------------------------------------
+
+        this.assertEqual(testDependencyGraph.getScriptExportName(mockScriptA), "nodeA",
+            "Assert node A is returned which has an export name");
+        this.assertEqual(testDependencyGraph.getScriptExportName(mockScriptB), undefined,
+            "Assert undefined is returned since script B does not have an export code but the script was added");
+        this.assertEqual(testDependencyGraph.getScriptExportName(mockScriptC), undefined,
+            "Assert undefined is returned since script C hasn't been added to the graph");
+
+    }).with('@Test("DependencyGraph getScriptExportName test")')
 };
 
 

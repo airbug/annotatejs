@@ -2,171 +2,222 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Collection = require('../../lib/Collection');
 var Map = require('../../lib/Map');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var MapTests = {
-
-    /**
-     *
-     */
-    mapSimplePutContainsValueTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var map = new Map();
-        map.put('key1', 'value1');
-        map.put('key2', 'value2');
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(map.containsValue('value1'), true,
+/**
+ *
+ */
+var mapSimplePutContainsValueTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.map = new Map();
+        this.value1 = "value1";
+        this.value2 = "value2";
+        this.value3 = "value3";
+        this.map.put('key1', this.value1);
+        this.map.put('key2', this.value2);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.map.containsValue(this.value1), true,
             "Assert containsValue returns true for value1.");
-        this.assertEqual(map.containsValue('value2'), true,
+        test.assertEqual(this.map.containsValue(this.value2), true,
             "Assert containsValue returns true for value2.");
-        this.assertEqual(map.containsValue('value3'), false,
+        test.assertEqual(this.map.containsValue(this.value3), false,
             "Assert containsValue returns false for value that hasn't been added to the map.");
-
-    }).with('@Test("Map - simple put/containsValue test")'),
-
-    /**
-     *
-     */
-    mapSimplePutGetTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var map = new Map();
-        map.put('key1', 'value1');
+    }
+};
+annotate(mapSimplePutContainsValueTest).with(
+    annotation("Test").params("Map - simple put/containsValue test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ *
+ */
+var mapSimplePutGetTest = {
 
-        this.assertEqual(map.get('key1'), 'value1', "Assert value mapped to key is correct.");
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-    }).with('@Test("Map - simple put/get test")'),
-
-    /**
-     * This tests..
-     * 1) That the getKeyCollection method successfully returns a Collection
-     * 2) That the getKeyCollection method of an empty Map returns an empty Collection
-     */
-    mapGetKeyCollectionOnEmptyMapTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var map = new Map();
-        var emptyKeyCollection = map.getKeyCollection();
+    setup: function() {
+        this.map = new Map();
+        this.key1 = "key1";
+        this.value1 = "value1";
+        this.map.put(this.key1, this.value1);
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(emptyKeyCollection, Collection),
+    test: function(test) {
+        test.assertEqual(this.map.get(this.key1), this.value1,
+            "Assert value mapped to key is correct.");
+    }
+};
+annotate(mapSimplePutGetTest).with(
+    annotation("Test").params("Map - simple put/get test")
+);
+
+
+/**
+ * This tests..
+ * 1) That the getKeyCollection method successfully returns a Collection
+ * 2) That the getKeyCollection method of an empty Map returns an empty Collection
+ */
+var mapGetKeyCollectionOnEmptyMapTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.map = new Map();
+        this.emptyKeyCollection = this.map.getKeyCollection();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.emptyKeyCollection, Collection),
             "Assert getKeyCollection returned a Collection when called on an empty Map");
-        this.assertEqual(emptyKeyCollection.getCount(), 0,
+        test.assertEqual(this.emptyKeyCollection.getCount(), 0,
             "Assert key Collection count is 0");
-
-    }).with('@Test("Map - getKeyCollection called on an empty Map test")'),
-
-    /**
-     * This tests..
-     * 1) That the getKeyCollection method successfully returns a Collection
-     * 2) That the getKeyCollection method of an empty Map returns a map with all of the Map's keys
-     */
-    mapGetKeyCollectionTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var map = new Map();
-        map.put('key1', 'value1');
-        map.put('key2', 'value2');
-        map.put('key3', 'value3');
-        var keyCollection = map.getKeyCollection();
+    }
+};
+annotate(mapGetKeyCollectionOnEmptyMapTest).with(
+    annotation("Test").params("Map - getKeyCollection called on an empty Map test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ * This tests..
+ * 1) That the getKeyCollection method successfully returns a Collection
+ * 2) That the getKeyCollection method of an empty Map returns a map with all of the Map's keys
+ */
+var mapGetKeyCollectionTest = {
 
-        this.assertTrue(Class.doesExtend(keyCollection, Collection),
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function()  {
+        this.map = new Map();
+        this.key1 = "key1";
+        this.key2 = "key2";
+        this.key3 = "key3";
+        this.value1 = "value1";
+        this.value2 = "value2";
+        this.value3 = "value3";
+        this.map.put(this.key1, this.value1);
+        this.map.put(this.key2, this.value2);
+        this.map.put(this.key3, this.value3);
+        this.keyCollection = this.map.getKeyCollection();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.keyCollection, Collection),
             "Assert getKeyCollection returned a Collection");
-        this.assertEqual(keyCollection.getCount(), 3,
+        test.assertEqual(this.keyCollection.getCount(), 3,
             "Assert key Collection count is 3");
-        this.assertEqual(keyCollection.contains('key1'), true,
+        test.assertEqual(this.keyCollection.contains(this.key1), true,
             "Assert key Collection contains key1");
-        this.assertEqual(keyCollection.contains('key2'), true,
+        test.assertEqual(this.keyCollection.contains(this.key2), true,
             "Assert key Collection contains key2");
-        this.assertEqual(keyCollection.contains('key3'), true,
+        test.assertEqual(this.keyCollection.contains(this.key3), true,
             "Assert key Collection contains key3");
+    }
+};
+annotate(mapGetKeyCollectionTest).with(
+    annotation("Test").params("Map - getKeyCollection test")
+);
 
-    }).with('@Test("Map - getKeyCollection test")'),
 
-    /**
-     *
-     */
-    mapDataTypeKeyTest: annotate(function() {
+/**
+ *
+ */
+var mapDataTypeKeyTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
-        var keys = [
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.keys = [
             {},
             [],
             'key',
             123,
             true
         ];
-        var values = [
+        this.values = [
             'value1',
             'value2',
             'value3',
             'value4',
             'value5'
         ];
-        var map = new Map();
+        this.map = new Map();
 
-        for (var i = 0, size = keys.length; i < size; i++) {
-            var key = keys[i];
-            var value = values[i];
-            map.put(key, value);
+        for (var i = 0, size = this.keys.length; i < size; i++) {
+            var key = this.keys[i];
+            var value = this.values[i];
+            this.map.put(key, value);
         }
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        this.assertTrue(map.containsKey(keys[0]), "Assert plain javascript object can be used as a key.");
-        this.assertTrue(map.containsKey(keys[1]), "Assert plain javascript array can be used as a key.");
-        this.assertTrue(map.containsKey(keys[2]), "Assert plain javascript string can be used as a key.");
-        this.assertTrue(map.containsKey(keys[3]), "Assert plain javascript number can be used as a key.");
-        this.assertTrue(map.containsKey(keys[4]), "Assert plain javascript boolean can be used as a key.");
-
-        this.assertFalse(map.containsKey({}), "Assert that different plain javascript objects are treated as different keys.");
-        this.assertFalse(map.containsKey([]), "Assert that different plain javascript arrays are treated as different keys.");
-
-
-    }).with('@Test("Map - data type key test")')
-
-    //TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"
-    //TODO BRN: Add a remove test
+    test: function(test) {
+        test.assertTrue(this.map.containsKey(this.keys[0]),
+            "Assert plain javascript object can be used as a key.");
+        test.assertTrue(this.map.containsKey(this.keys[1]),
+            "Assert plain javascript array can be used as a key.");
+        test.assertTrue(this.map.containsKey(this.keys[2]),
+            "Assert plain javascript string can be used as a key.");
+        test.assertTrue(this.map.containsKey(this.keys[3]),
+            "Assert plain javascript number can be used as a key.");
+        test.assertTrue(this.map.containsKey(this.keys[4]),
+            "Assert plain javascript boolean can be used as a key.");
+        test.assertFalse(this.map.containsKey({}),
+            "Assert that different plain javascript objects are treated as different keys.");
+        test.assertFalse(this.map.containsKey([]),
+            "Assert that different plain javascript arrays are treated as different keys.");
+    }
 };
+annotate(mapDataTypeKeyTest).with(
+    annotation("Test").params("Map - data type key test")
+);
 
+//TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"
+//TODO BRN: Add a remove test
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = MapTests;

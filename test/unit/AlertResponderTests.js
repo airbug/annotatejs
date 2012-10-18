@@ -2,110 +2,129 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var AlertResponder = require('../../lib/AlertResponder');
 var Class = require('../../lib/Class');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var AlertResponderTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new AlertResponder
-     */
-    alertResponderInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testResponderFunction = function(event) {};
-        var testResponderContext = {};
-        var alertResponder = new AlertResponder(testResponderFunction, testResponderContext);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(alertResponder, AlertResponder),
+
+/**
+ * This tests
+ * 1) Instantiation of a new AlertResponder
+ */
+var alertResponderInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testResponderFunction = function(event) {};
+        this.testResponderContext = {};
+        this.alertResponder = new AlertResponder(this.testResponderFunction, this.testResponderContext);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.alertResponder, AlertResponder),
             "Assert AlertResponder instance extends AlertResponder ");
+    }
 
-    }).with('@Test("AlertResponder instantiation test")'),
-
-    /**
-     * This tests
-     * 1) That AlertResponders with the same function and context are equal
-     * 2) That AlertResponders with the same function but different contexts are not equal
-     * 3) That AlertResponders with different functions but the same context are not equal
-     * 4) That AlertResponders with different functions and different contexts are not equal
-     */
-    alertResponderEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testResponderFunction1 = function(event) {};
-        var testResponderContext1 = {};
-        var testResponderFunction2 = function(event) {};
-        var testResponderContext2 = {};
-
-        var equalAlertResponder1 = new AlertResponder(testResponderFunction1, testResponderContext1);
-        var equalAlertResponder2 = new AlertResponder(testResponderFunction1, testResponderContext1);
-
-        var notEqualAlertResponder1 = new AlertResponder(testResponderFunction1, testResponderContext1);
-        var notEqualAlertResponder2 = new AlertResponder(testResponderFunction1, testResponderContext2);
-        var notEqualAlertResponder3 = new AlertResponder(testResponderFunction2, testResponderContext1);
-        var notEqualAlertResponder4 = new AlertResponder(testResponderFunction2, testResponderContext2);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(equalAlertResponder1, equalAlertResponder2,
-            "Assert AlertResponders with the same function and context are equal");
-        this.assertNotEqual(notEqualAlertResponder1, notEqualAlertResponder2,
-            "Assert AlertResponders with the same function but different contexts are not equal.");
-        this.assertNotEqual(notEqualAlertResponder1, notEqualAlertResponder3,
-            "Assert AlertResponders with different functions but the same context are not equal.");
-        this.assertNotEqual(notEqualAlertResponder1, notEqualAlertResponder4,
-            "Assert AlertResponders with different functions and different contexts are not equal.");
-
-    }).with('@Test("AlertResponder equality test")'),
-
-    /**
-     * This tests
-     * 1) That AlertResponders with the same function and context have the same hash code
-     */
-    alertResponderHashCodeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testResponderFunction = function(event) {};
-        var testResponderContext = {};
-        var alertResponder1 = new AlertResponder(testResponderFunction, testResponderContext);
-        var alertResponder2 = new AlertResponder(testResponderFunction, testResponderContext);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(alertResponder1.hashCode(), alertResponder2.hashCode(),
-            "Assert AlertResponders with the same function and context have equal hash codes");
-
-
-    }).with('@Test("AlertResponder hash code equality test")')
 };
+annotate(alertResponderInstantiationTest).with(
+    annotation("Test").params("AlertResponder instantiation test")
+);
 
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) That AlertResponders with the same function and context are equal
+ * 2) That AlertResponders with the same function but different contexts are not equal
+ * 3) That AlertResponders with different functions but the same context are not equal
+ * 4) That AlertResponders with different functions and different contexts are not equal
+ */
+var alertResponderEqualityTest = {
 
-module.exports = AlertResponderTests;
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testResponderFunction1 = function(event) {};
+        this.testResponderContext1 = {};
+        this.testResponderFunction2 = function(event) {};
+        this.testResponderContext2 = {};
+
+        this.equalAlertResponder1 = new AlertResponder(this.testResponderFunction1, this.testResponderContext1);
+        this.equalAlertResponder2 = new AlertResponder(this.testResponderFunction1, this.testResponderContext1);
+
+        this.notEqualAlertResponder1 = new AlertResponder(this.testResponderFunction1, this.testResponderContext1);
+        this.notEqualAlertResponder2 = new AlertResponder(this.testResponderFunction1, this.testResponderContext2);
+        this.notEqualAlertResponder3 = new AlertResponder(this.testResponderFunction2, this.testResponderContext1);
+        this.notEqualAlertResponder4 = new AlertResponder(this.testResponderFunction2, this.testResponderContext2);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.equalAlertResponder1, this.equalAlertResponder2,
+            "Assert AlertResponders with the same function and context are equal");
+        test.assertNotEqual(this.notEqualAlertResponder1, this.notEqualAlertResponder2,
+            "Assert AlertResponders with the same function but different contexts are not equal.");
+        test.assertNotEqual(this.notEqualAlertResponder1, this.notEqualAlertResponder3,
+            "Assert AlertResponders with different functions but the same context are not equal.");
+        test.assertNotEqual(this.notEqualAlertResponder1, this.notEqualAlertResponder4,
+            "Assert AlertResponders with different functions and different contexts are not equal.");
+    }
+};
+annotate(alertResponderEqualityTest).with(
+    annotation("Test").params("AlertResponder equality test")
+);
+
+
+/**
+ * This tests
+ * 1) That AlertResponders with the same function and context have the same hash code
+ */
+var alertResponderHashCodeEqualityTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testResponderFunction = function(event) {};
+        this.testResponderContext = {};
+        this.alertResponder1 = new AlertResponder(this.testResponderFunction, this.testResponderContext);
+        this.alertResponder2 = new AlertResponder(this.testResponderFunction, this.testResponderContext);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.alertResponder1.hashCode(), this.alertResponder2.hashCode(),
+            "Assert AlertResponders with the same function and context have equal hash codes");
+    }
+};
+annotate(alertResponderHashCodeEqualityTest).with(
+    annotation("Test").params("AlertResponder hash code equality test")
+);
 
 
 //TODO BRN: Add a respond test

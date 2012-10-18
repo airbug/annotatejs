@@ -2,79 +2,85 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var PublisherSubscription = require('../../lib/PublisherSubscription');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var PublisherSubscriptionTests = {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-    /**
-     * This tests
-     * 1) That subscriptions with the same function and context but different topics are not equal
-     * 2) That subscriptions with the same function, context, and topic are equal
-     */
-    subscriptionEqualityTest: annotate(function() {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
+/**
+ * This tests
+ * 1) That subscriptions with the same function and context but different topics are not equal
+ * 2) That subscriptions with the same function, context, and topic are equal
+ */
+var subscriptionEqualityTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
         var testFunction = function() {};
         var tesObject = {};
         var testTopic1 = "topic1";
         var testTopic2 = "topic2";
+        this.notEqualPublisherSubscription1 = new PublisherSubscription(testTopic1, testFunction, tesObject);
+        this.notEqualPublisherSubscription2 = new PublisherSubscription(testTopic2, testFunction, tesObject);
+        this.equalPublisherSubscription1 = new PublisherSubscription(testTopic1, testFunction, tesObject);
+        this.equalPublisherSubscription2 = new PublisherSubscription(testTopic1, testFunction, tesObject);
+    },
 
-        var notEqualPublisherSubscription1 = new PublisherSubscription(testTopic1, testFunction, tesObject);
-        var notEqualPublisherSubscription2 = new PublisherSubscription(testTopic2, testFunction, tesObject);
 
-        var equalPublisherSubscription1 = new PublisherSubscription(testTopic1, testFunction, tesObject);
-        var equalPublisherSubscription2 = new PublisherSubscription(testTopic1, testFunction, tesObject);
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertNotEqual(notEqualPublisherSubscription1, notEqualPublisherSubscription2,
+    test: function(test) {
+        test.assertNotEqual(this.notEqualPublisherSubscription1, this.notEqualPublisherSubscription2,
             "Assert subscriptions with the same function and context but different topics are not equal.");
-        this.assertEqual(equalPublisherSubscription1, equalPublisherSubscription2,
+        test.assertEqual(this.equalPublisherSubscription1, this.equalPublisherSubscription2,
             "Assert subscriptions with the same function, context, and topic are equal");
+    }
+};
+annotate(subscriptionEqualityTest).with(
+    annotation("Test").params("Subscription equality test")
+);
 
 
-    }).with('@Test("Subscription equality test")'),
+/**
+ * This tests
+ * 1) That subscriptions with the same function, context, and topic have the same hash code
+ */
+var subscriptionHashCodeEqualityTest = {
 
-    /**
-     * This tests
-     * 1) That subscriptions with the same function, context, and topic have the same hash code
-     */
-    subscriptionHashCodeEqualityTest: annotate(function() {
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
+    setup: function() {
         var testFunction = function() {};
         var tesObject = {};
         var testTopic = "topic1";
+        this.publisherSubscription1 = new PublisherSubscription(testTopic, testFunction, tesObject);
+        this.publisherSubscription2 = new PublisherSubscription(testTopic, testFunction, tesObject);
+    },
 
-        var publisherSubscription1 = new PublisherSubscription(testTopic, testFunction, tesObject);
-        var publisherSubscription2 = new PublisherSubscription(testTopic, testFunction, tesObject);
 
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(publisherSubscription1.hashCode(), publisherSubscription2.hashCode(),
+    test: function(test) {
+        test.assertEqual(this.publisherSubscription1.hashCode(), this.publisherSubscription2.hashCode(),
             "Assert subscriptions with the same function, context, and topic have equal hash codes");
-
-
-    }).with('@Test("Subscription hash code equality test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = PublisherSubscriptionTests;
+annotate(subscriptionHashCodeEqualityTest).with(
+    annotation("Test").params("Subscription hash code equality test")
+);

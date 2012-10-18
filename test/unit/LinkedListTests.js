@@ -2,65 +2,76 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var LinkedList = require('../../lib/LinkedList');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var LinkedListTests = {
-
-    /**
-     *
-     */
-    linkedListGetCountTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var linkedList = new LinkedList();
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(linkedList.getCount(), 0, "Assert empty list has 0 count");
+/**
+ *
+ */
+var linkedListGetCountTest = {
 
-    }).with('@Test("LinkedList getCount test")'),
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-    /**
-     *
-     */
-    linkedListAddFirstTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var linkedList = new LinkedList();
+    setup: function() {
+        this.linkedList = new LinkedList();
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        var firstValue = 'value1';
-
-        linkedList.addFront('value1');
-        this.assertEqual(linkedList.getCount(), 1, "Assert count is 1 after adding first value");
-        this.assertEqual(linkedList.getFirst(), firstValue,
-            "Assert value returned with getFirst is the first value added.");
-        this.assertEqual(linkedList.getLast(), firstValue,
-            "Assert value returned with getLast is the first value added since there's only one value.");
-        this.assertEqual(linkedList.getAt(0), firstValue,
-            "Assert value returned with getAt(0) is the first value added.");
-
-    }).with('@Test("LinkedList addFront test")')
+    test: function(test) {
+        test.assertEqual(this.linkedList.getCount(), 0, "Assert empty list has 0 count");
+    }
 };
+annotate(linkedListGetCountTest).with(
+    annotation("Test").params("LinkedList getCount test")
+);
 
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
+/**
+ *
+ */
+var linkedListAddFirstTest = {
 
-module.exports = LinkedListTests;
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.linkedList = new LinkedList();
+        this.firstValue = 'value1';
+        this.linkedList.addFront(this.firstValue);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.linkedList.getCount(), 1,
+            "Assert count is 1 after adding first value");
+        test.assertEqual(this.linkedList.getFirst(), this.firstValue,
+            "Assert value returned with getFirst is the first value added.");
+        test.assertEqual(this.linkedList.getLast(), this.firstValue,
+            "Assert value returned with getLast is the first value added since there's only one value.");
+        test.assertEqual(this.linkedList.getAt(0), this.firstValue,
+            "Assert value returned with getAt(0) is the first value added.");
+    }
+};
+annotate(linkedListAddFirstTest).with(
+    annotation("Test").params("LinkedList addFront test")
+);

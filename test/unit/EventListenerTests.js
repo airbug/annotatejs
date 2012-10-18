@@ -2,110 +2,127 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var EventListener = require('../../lib/EventListener');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var EventListenerTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new EventListener
-     */
-    eventListenerInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testListenerFunction = function(event) {};
-        var testListenerContext = {};
-        var eventListener = new EventListener(testListenerFunction, testListenerContext);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(eventListener, EventListener),
+/**
+ * This tests
+ * 1) Instantiation of a new EventListener
+ */
+var eventListenerInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testListenerFunction = function(event) {};
+        this.testListenerContext = {};
+        this.eventListener = new EventListener(this.testListenerFunction, this.testListenerContext);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.eventListener, EventListener),
             "Assert EventListener instance extends EventListener ");
-
-    }).with('@Test("EventListener instantiation test")'),
-
-    /**
-     * This tests
-     * 1) That EventListeners with the same function and context are equal
-     * 2) That EventListeners with the same function but different contexts are not equal
-     * 3) That EventListeners with different functions but the same context are not equal
-     * 4) That EventListeners with different functions and different contexts are not equal
-     */
-    eventListenerEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testListenerFunction1 = function(event) {};
-        var testListenerContext1 = {};
-        var testListenerFunction2 = function(event) {};
-        var testListenerContext2 = {};
-
-        var equalEventListener1 = new EventListener(testListenerFunction1, testListenerContext1);
-        var equalEventListener2 = new EventListener(testListenerFunction1, testListenerContext1);
-
-        var notEqualEventListener1 = new EventListener(testListenerFunction1, testListenerContext1);
-        var notEqualEventListener2 = new EventListener(testListenerFunction1, testListenerContext2);
-        var notEqualEventListener3 = new EventListener(testListenerFunction2, testListenerContext1);
-        var notEqualEventListener4 = new EventListener(testListenerFunction2, testListenerContext2);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(equalEventListener1, equalEventListener2,
-            "Assert EventListeners with the same function and context are equal");
-        this.assertNotEqual(notEqualEventListener1, notEqualEventListener2,
-            "Assert EventListeners with the same function but different contexts are not equal.");
-        this.assertNotEqual(notEqualEventListener1, notEqualEventListener3,
-            "Assert EventListeners with different functions but the same context are not equal.");
-        this.assertNotEqual(notEqualEventListener1, notEqualEventListener4,
-            "Assert EventListeners with different functions and different contexts are not equal.");
-
-    }).with('@Test("EventListener equality test")'),
-
-    /**
-     * This tests
-     * 1) That EventListeners with the same function and context have the same hash code
-     */
-    eventListenerHashCodeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testListenerFunction = function(event) {};
-        var testListenerContext = {};
-        var eventListener1 = new EventListener(testListenerFunction, testListenerContext);
-        var eventListener2 = new EventListener(testListenerFunction, testListenerContext);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(eventListener1.hashCode(), eventListener2.hashCode(),
-            "Assert EventListeners with the same function and context have equal hash codes");
-
-
-    }).with('@Test("EventListener hash code equality test")')
+    }
 };
+annotate(eventListenerInstantiationTest).with(
+    annotation("Test").params("EventListener instantiation test")
+);
 
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) That EventListeners with the same function and context are equal
+ * 2) That EventListeners with the same function but different contexts are not equal
+ * 3) That EventListeners with different functions but the same context are not equal
+ * 4) That EventListeners with different functions and different contexts are not equal
+ */
+var eventListenerEqualityTest = {
 
-module.exports = EventListenerTests;
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testListenerFunction1 = function(event) {};
+        this.testListenerContext1 = {};
+        this.testListenerFunction2 = function(event) {};
+        this.testListenerContext2 = {};
+
+        this.equalEventListener1 = new EventListener(this.testListenerFunction1, this.testListenerContext1);
+        this.equalEventListener2 = new EventListener(this.testListenerFunction1, this.testListenerContext1);
+
+        this.notEqualEventListener1 = new EventListener(this.testListenerFunction1, this.testListenerContext1);
+        this.notEqualEventListener2 = new EventListener(this.testListenerFunction1, this.testListenerContext2);
+        this.notEqualEventListener3 = new EventListener(this.testListenerFunction2, this.testListenerContext1);
+        this.notEqualEventListener4 = new EventListener(this.testListenerFunction2, this.testListenerContext2);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.equalEventListener1, this.equalEventListener2,
+            "Assert EventListeners with the same function and context are equal");
+        test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener2,
+            "Assert EventListeners with the same function but different contexts are not equal.");
+        test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener3,
+            "Assert EventListeners with different functions but the same context are not equal.");
+        test.assertNotEqual(this.notEqualEventListener1, this.notEqualEventListener4,
+            "Assert EventListeners with different functions and different contexts are not equal.");
+    }
+};
+annotate(eventListenerEqualityTest).with(
+    annotation("Test").params("EventListener equality test")
+);
+
+
+/**
+ * This tests
+ * 1) That EventListeners with the same function and context have the same hash code
+ */
+var eventListenerHashCodeEqualityTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testListenerFunction = function(event) {};
+        this.testListenerContext = {};
+        this.eventListener1 = new EventListener(this.testListenerFunction, this.testListenerContext);
+        this.eventListener2 = new EventListener(this.testListenerFunction, this.testListenerContext);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.eventListener1.hashCode(), this.eventListener2.hashCode(),
+            "Assert EventListeners with the same function and context have equal hash codes");
+    }
+};
+annotate(eventListenerHashCodeEqualityTest).with(
+    annotation("Test").params("EventListener hash code equality test")
+);
 
 
 //TODO BRN: Add a hearEvent test

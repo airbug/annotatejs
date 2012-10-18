@@ -2,50 +2,52 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var TreeNode = require('../../lib/TreeNode');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var TreeNodeTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new TreeNode
-     * 2) That the "value" is the value passed in during instantiation
-     * 3) That the parent of the node is null after instantiation
-     * 4) That the childNodes is an empty List after instantiation
-     */
-    instantiateTreeNodeTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testValue = "testValue";
-        var treeNode = new TreeNode(testValue);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(treeNode.getValue(), testValue,
+/**
+ * This tests
+ * 1) Instantiation of a new TreeNode
+ * 2) That the "value" is the value passed in during instantiation
+ * 3) That the parent of the node is null after instantiation
+ * 4) That the childNodes is an empty List after instantiation
+ */
+var instantiateTreeNodeTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testValue = "testValue";
+        this.treeNode = new TreeNode(this.testValue);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.treeNode.getValue(), this.testValue,
             "Assert TreeNode value was set correctly during instantiation");
-        this.assertEqual(treeNode.getParentNode(), null,
+        test.assertEqual(this.treeNode.getParentNode(), null,
             "Assert TreeNode parent was set correctly during instantiation");
-        this.assertEqual(treeNode.getChildNodes().isEmpty(), true,
+        test.assertEqual(this.treeNode.getChildNodes().isEmpty(), true,
             "Assert TreeNode childNodes is empty after instantiation");
-
-    }).with('@Test("TreeNode instantiation test")')
-
-
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = TreeNodeTests;
+annotate(instantiateTreeNodeTest).with(
+    annotation("Test").params("TreeNode instantiation test")
+);

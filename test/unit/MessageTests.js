@@ -2,44 +2,49 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Message = require('../../lib/Message');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var MessageTests = {
-    /**
-     * This tests
-     * 1) Instantiation of a Message
-     * 2) That the topic and data values were set correctly during instantiation
-     */
-    instantiateMessageTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testTopic = "testTopic";
-        var testData = "testData";
-        var message = new Message(testTopic, testData);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(message.getTopic(), testTopic,
+/**
+ * This tests
+ * 1) Instantiation of a Message
+ * 2) That the topic and data values were set correctly during instantiation
+ */
+var instantiateMessageTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testTopic = "testTopic";
+        this.testData = "testData";
+        this.message = new Message(this.testTopic, this.testData);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.message.getTopic(), this.testTopic,
             "Assert message topic was set correctly during instantiation");
-        this.assertEqual(message.getData(), testData,
+        test.assertEqual(this.message.getData(), this.testData,
             "Assert message data was set correctly during instantiation");
-
-    }).with('@Test("Message instantiation test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = MessageTests;
+annotate(instantiateMessageTest).with(
+    annotation("Test").params("Message instantiation test")
+);

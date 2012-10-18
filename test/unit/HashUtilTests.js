@@ -2,59 +2,64 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var HashUtil = require('../../lib/HashUtil');
 var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var HashUtilTests = {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-    /**
-     *
-     */
-    hashRepeatTest: annotate(function() {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        var typeValueSets = TypeValueSetsHelper.getTypeValueSets();
-        var hashValues = {};
+/**
+ *
+ */
+var hashRepeatTest = {
 
-        for (var type in typeValueSets) {
-            var typeValueSet = typeValueSets[type];
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        var _this = this;
+        this.typeValueSets = TypeValueSetsHelper.getTypeValueSets();
+        this.hashValues = {};
+        for (var type in this.typeValueSets) {
+            var typeValueSet = this.typeValueSets[type];
             typeValueSet.forEach(function(typeValue) {
                 var hash = HashUtil.hash(typeValue.value);
-                hashValues[typeValue.name] = hash;
+                _this.hashValues[typeValue.name] = hash;
             });
         }
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
 
         // TEST: Repeat the hashing and ensure that the hash values are the same.
 
-        for (var type in typeValueSets) {
-            var typeValueSet = typeValueSets[type];
+        for (var type in this.typeValueSets) {
+            var typeValueSet = this.typeValueSets[type];
             var _this = this;
             typeValueSet.forEach(function(typeValue) {
                 var repeatHash = HashUtil.hash(typeValue.value);
-                var expectedHash = hashValues[typeValue.name];
-                _this.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + typeValue.value +
+                var expectedHash = _this.hashValues[typeValue.name];
+                test.assertEqual(repeatHash, expectedHash, "Assert hash of " + typeValue.name + " " + typeValue.value +
                     " is the same when it is hashed repeatedly.");
             });
         }
-
-    }).with('@Test("Hash repeat test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = HashUtilTests;
+annotate(hashRepeatTest).with(
+    annotation("Test").params("Hash repeat test")
+);

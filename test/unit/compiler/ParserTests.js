@@ -2,49 +2,52 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../lib/Annotate').annotate;
+var Annotate = require('../../../lib/Annotate');
 var Character = require('../../../lib/compiler/Character');
 var Class = require('../../../lib/Class');
 var Parser = require('../../../lib/compiler/Parser');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var ParserTests = {
-    /**
-     *
-     */
-    generateCharacterListTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var characterString = "abcdef";
-        var characterList = Parser.generateCharacterList(characterString);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        for (var i = 0, size = characterString.length; i < size; i++) {
-            var char = characterString.substr(i, 1);
-            var characterObject = characterList.getAt(i);
-            this.assertTrue(Class.doesExtend(characterObject, Character),
+/**
+ *
+ */
+var generateCharacterListTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.characterString = "abcdef";
+        this.characterList = Parser.generateCharacterList(this.characterString);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        for (var i = 0, size = this.characterString.length; i < size; i++) {
+            var char = this.characterString.substr(i, 1);
+            var characterObject = this.characterList.getAt(i);
+            test.assertTrue(Class.doesExtend(characterObject, Character),
                 "Assert character in character list is an instance of Character");
-            this.assertEqual(char, characterObject.getValue(),
+            test.assertEqual(char, characterObject.getValue(),
                 "Assert character from string and value of Character object match");
         }
-
-    }).with('@Test("Generate character list test")')
-
-
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = ParserTests;
+annotate(generateCharacterListTest).with(
+    annotation("Test").params("Generate character list test")
+);

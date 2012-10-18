@@ -2,170 +2,194 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Document = require('../../lib/Document');
 var DocumentNode = require('../../lib/DocumentNode');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var DocumentTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new Document
-     * 2) That the parent of the node is null after instantiation
-     * 3) That the childNodes is an empty List after instantiation
-     */
-    documentInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var document = new Document();
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(document.getParentNode(), undefined,
+/**
+ * This tests
+ * 1) Instantiation of a new Document
+ * 2) That the parent of the node is null after instantiation
+ * 3) That the childNodes is an empty List after instantiation
+ */
+var documentInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.document = new Document();
+    },
+    
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.document.getParentNode(), undefined,
             "Assert Document parent was set correctly during instantiation");
-        this.assertEqual(document.getOwnerDocument(), undefined,
+        test.assertEqual(this.document.getOwnerDocument(), undefined,
             "Assert Document owner document was set correctly during instantiation");
-        this.assertEqual(document.getParentDispatcher(), undefined,
+        test.assertEqual(this.document.getParentDispatcher(), undefined,
             "Assert Document parent dispatcher was set correctly during instantiation");
-        this.assertEqual(document.getChildNodes().isEmpty(), true,
+        test.assertEqual(this.document.getChildNodes().isEmpty(), true,
             "Assert Document childNodes is empty after instantiation");
-
-    }).with('@Test("Document instantiation test")'),
-
-    /**
-     * This tests
-     * 1) Adding a child DocumentNode to a Document
-     * 2) That the ownerDocument of a child is set correctly.
-     */
-    documentAddChildNodeTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var document = new Document();
-        var documentNode = new DocumentNode();
+    }
+};
+annotate(documentInstantiationTest).with(
+    annotation("Test").params("Document instantiation test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) Adding a child DocumentNode to a Document
+ * 2) That the ownerDocument of a child is set correctly.
+ */
+var documentAddChildNodeTest = {
 
-        document.addChildNode(documentNode);
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        this.assertEqual(document.getParentNode(), undefined,
+    setup: function() {
+        this.document = new Document();
+        this.documentNode = new DocumentNode();
+    },
+    
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        this.document.addChildNode(this.documentNode);
+        test.assertEqual(this.document.getParentNode(), undefined,
             "Assert Document parent is still undefined after adding a child");
-        this.assertEqual(document.getOwnerDocument(), undefined,
+        test.assertEqual(this.document.getOwnerDocument(), undefined,
             "Assert Document ownerDocument is still undefined after adding a child");
-        this.assertEqual(document.getParentDispatcher(), undefined,
+        test.assertEqual(this.document.getParentDispatcher(), undefined,
             "Assert Document parentDispatcher is still undefined after adding a child");
-        this.assertEqual(document.getChildNodes().getCount(), 1,
+        test.assertEqual(this.document.getChildNodes().getCount(), 1,
             "Assert Document childNodes has one child after adding a child");
-        this.assertEqual(document.getChildNodes().contains(documentNode), true,
+        test.assertEqual(this.document.getChildNodes().contains(this.documentNode), true,
             "Assert Document childNodes contains the child that was added");
-        this.assertEqual(documentNode.getParentNode(), document,
+        test.assertEqual(this.documentNode.getParentNode(), this.document,
             "Assert DocumentNode parentNode is now the document");
-        this.assertEqual(documentNode.getOwnerDocument(), document,
+        test.assertEqual(this.documentNode.getOwnerDocument(), this.document,
             "Assert DocumentNode ownerDocument is now the document");
-        this.assertEqual(documentNode.getParentDispatcher(), document,
+        test.assertEqual(this.documentNode.getParentDispatcher(), this.document,
             "Assert DocumentNode parentDispatcher is now the document");
-
-    }).with('@Test("Document addChildNode test")'),
-
-    /**
-     * This tests
-     * 1) Adding a child DocumentNode that already has children to a Document
-     * 2) That the ownerDocument of all children is set correctly
-     */
-    documentAddChildNodeWithChildrenTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var document = new Document();
-        var documentNode = new DocumentNode();
-        var documentNodeChild = new DocumentNode();
+    }
+};
+annotate(documentAddChildNodeTest).with(
+    annotation("Test").params("Document addChildNode test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) Adding a child DocumentNode that already has children to a Document
+ * 2) That the ownerDocument of all children is set correctly
+ */
+var documentAddChildNodeWithChildrenTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.document = new Document();
+        this.documentNode = new DocumentNode();
+        this.documentNodeChild = new DocumentNode();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
 
         //NOTE BRN: Add the child first before adding it to the document
 
-        documentNode.addChildNode(documentNodeChild);
-        document.addChildNode(documentNode);
-
-        this.assertEqual(documentNode.getOwnerDocument(), document,
+        this.documentNode.addChildNode(this.documentNodeChild);
+        this.document.addChildNode(this.documentNode);
+        test.assertEqual(this.documentNode.getOwnerDocument(), this.document,
             "Assert DocumentNode ownerDocument is now the document");
-        this.assertEqual(documentNodeChild.getOwnerDocument(), document,
+        test.assertEqual(this.documentNodeChild.getOwnerDocument(), this.document,
             "Assert DocumentNode's child's ownerDocument is now the document");
+    }
+};
+annotate(documentAddChildNodeWithChildrenTest).with(
+    annotation("Test").params("Document addChildNode with children test")
+);
 
-    }).with('@Test("Document addChildNode with children test")'),
 
-    /**
-     * This tests
-     * 1) Walking a document
-     * 2) That the nodes are walked in the correct top down depth first order.
-     */
-    documentWalkOrderTest: annotate(function() {
+/**
+ * This tests
+ * 1) Walking a document
+ * 2) That the nodes are walked in the correct top down depth first order.
+ */
+var documentWalkOrderTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var testDocument = new Document();
-        var child1ofDocument = new DocumentNode();
-        var child2ofDocument =  new DocumentNode();
-        var child1ofChild1ofDocument = new DocumentNode();
-        var child2ofChild1ofDocument = new DocumentNode();
-        var child3ofChild1ofDocument = new DocumentNode();
-        var child1ofChild2ofChild1ofDocument = new DocumentNode();
+    setup: function() {
+        this.testDocument = new Document();
+        this.child1ofDocument = new DocumentNode();
+        this.child2ofDocument =  new DocumentNode();
+        this.child1ofChild1ofDocument = new DocumentNode();
+        this.child2ofChild1ofDocument = new DocumentNode();
+        this.child3ofChild1ofDocument = new DocumentNode();
+        this.child1ofChild2ofChild1ofDocument = new DocumentNode();
 
-        testDocument.addChildNode(child1ofDocument);
-        testDocument.addChildNode(child2ofDocument);
-        child1ofDocument.addChildNode(child1ofChild1ofDocument);
-        child1ofDocument.addChildNode(child2ofChild1ofDocument);
-        child1ofDocument.addChildNode(child3ofChild1ofDocument);
-        child2ofChild1ofDocument.addChildNode(child1ofChild2ofChild1ofDocument);
+        this.testDocument.addChildNode(this.child1ofDocument);
+        this.testDocument.addChildNode(this.child2ofDocument);
+        this.child1ofDocument.addChildNode(this.child1ofChild1ofDocument);
+        this.child1ofDocument.addChildNode(this.child2ofChild1ofDocument);
+        this.child1ofDocument.addChildNode(this.child3ofChild1ofDocument);
+        this.child2ofChild1ofDocument.addChildNode(this.child1ofChild2ofChild1ofDocument);
 
-        var expectedWalkOrder = [
-            testDocument,
-            child1ofDocument,
-            child1ofChild1ofDocument,
-            child2ofChild1ofDocument,
-            child1ofChild2ofChild1ofDocument,
-            child3ofChild1ofDocument,
-            child2ofDocument
+        this.expectedWalkOrder = [
+            this.testDocument,
+            this.child1ofDocument,
+            this.child1ofChild1ofDocument,
+            this.child2ofChild1ofDocument,
+            this.child1ofChild2ofChild1ofDocument,
+            this.child3ofChild1ofDocument,
+            this.child2ofDocument
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
+    test: function(test) {
         var actualWalkOrder = [];
-        testDocument.walk(function(value) {
+        this.testDocument.walk(function(value) {
             actualWalkOrder.push(value);
         });
 
-        this.assertEqual(actualWalkOrder.length, expectedWalkOrder.length,
+        test.assertEqual(actualWalkOrder.length,this.expectedWalkOrder.length,
             "Assert the walk took the correct number of steps");
         for (var i = 0, size = actualWalkOrder.length; i < size; i++) {
-            this.assertEqual(actualWalkOrder[i], expectedWalkOrder[i],
-                "Assert Document walk step '" + expectedWalkOrder[i] + "' was performed in the correct order");
+            test.assertEqual(actualWalkOrder[i], this.expectedWalkOrder[i],
+                "Assert Document walk step '" + this.expectedWalkOrder[i] + "' was performed in the correct order");
         }
-
-    }).with('@Test("Document walk order test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = DocumentTests;
+annotate(documentWalkOrderTest).with(
+    annotation("Test").params("Document walk order test")
+);

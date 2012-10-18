@@ -2,111 +2,127 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var GraphEdge = require('../../lib/GraphEdge');
 var GraphNode = require('../../lib/GraphNode');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var GraphEdgeTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new GraphEdge is successful
-     */
-    graphEdgeInstantiationWithGoodArgumentsTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testFromNode = new GraphNode("fromValue");
-        var testToNode = new GraphNode("toValue");
-        var testGraphEdge = new GraphEdge(testFromNode, testToNode);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
-                
-        this.assertEqual(testGraphEdge.getFromNode(), testFromNode,
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
+
+/**
+ * This tests
+ * 1) Instantiation of a new GraphEdge is successful
+ */
+var graphEdgeInstantiationWithGoodArgumentsTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testFromNode = new GraphNode("fromValue");
+        this.testToNode = new GraphNode("toValue");
+        this.testGraphEdge = new GraphEdge(this.testFromNode, this.testToNode);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.testGraphEdge.getFromNode(), this.testFromNode,
             "Assert fromNode was set correct during instantiation");
-        this.assertEqual(testGraphEdge.getToNode(), testToNode,
+        test.assertEqual(this.testGraphEdge.getToNode(), this.testToNode,
             "Assert toNode was set correct during instantiation");
-
-    }).with('@Test("GraphEdge instantiation test")'),
-
-    /**
-     * This tests
-     * 1) That GraphEdges with the same fromNode and the same toNode are equal
-     * 2) That GraphEdges with the same fromNode but different toNodes are not equal
-     * 3) That GraphEdges with different fromNodes but the same toNode are not equal
-     * 4) That GraphEdges with different fromNodes and different toNodes are not equal
-     */
-    graphEdgeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testFromNode1 = new GraphNode("fromNode1");
-        var testFromNode2 = new GraphNode("fromNode2");
-        var testToNode1 = new GraphNode("toNode1");
-        var testToNode2 = new GraphNode("toNode2");
-        
-        var equalGraphEdge1 = new GraphEdge(testFromNode1, testToNode1);
-        var equalGraphEdge2 = new GraphEdge(testFromNode1, testToNode1);
-
-        var notEqualGraphEdge1 = new GraphEdge(testFromNode1, testToNode1);
-        var notEqualGraphEdge2 = new GraphEdge(testFromNode1, testToNode2);
-        var notEqualGraphEdge3 = new GraphEdge(testFromNode2, testToNode1);
-        var notEqualGraphEdge4 = new GraphEdge(testFromNode2, testToNode2);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(equalGraphEdge1, equalGraphEdge2,
-            "Assert GraphEdges with the same fromNode and the same toNode are equal");
-        this.assertNotEqual(notEqualGraphEdge1, notEqualGraphEdge2,
-            "Assert GraphEdges with the same fromNode but different toNodes are not equal");
-        this.assertNotEqual(notEqualGraphEdge1, notEqualGraphEdge3,
-            "Assert GraphEdges with different fromNodes but the same toNode are not equal");
-        this.assertNotEqual(notEqualGraphEdge1, notEqualGraphEdge4,
-            "Assert GraphEdges with different fromNodes and different toNodes are not equal");
-
-    }).with('@Test("GraphEdge equality test")'),
-
-    /**
-     * This tests
-     * 1) That GraphNodes with the same function and context have the same hash code
-     */
-    graphNodeHashCodeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testFromNode = new GraphNode("fromNode");
-        var testToNode = new GraphNode("toNode");
-
-        var graphEdge1 = new GraphEdge(testFromNode, testToNode);
-        var graphEdge2 = new GraphEdge(testFromNode, testToNode);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(graphEdge1.hashCode(), graphEdge2.hashCode(),
-            "Assert GraphNodes with the same value have equal hash codes");
-
-
-    }).with('@Test("GraphEdge hash code equality test")')
+    }
 };
+annotate(graphEdgeInstantiationWithGoodArgumentsTest).with(
+    annotation("Test").params("GraphEdge instantiation test")
+);
 
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) That GraphEdges with the same fromNode and the same toNode are equal
+ * 2) That GraphEdges with the same fromNode but different toNodes are not equal
+ * 3) That GraphEdges with different fromNodes but the same toNode are not equal
+ * 4) That GraphEdges with different fromNodes and different toNodes are not equal
+ */
+var graphEdgeEqualityTest = {
 
-module.exports = GraphEdgeTests;
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testFromNode1 = new GraphNode("fromNode1");
+        this.testFromNode2 = new GraphNode("fromNode2");
+        this.testToNode1 = new GraphNode("toNode1");
+        this.testToNode2 = new GraphNode("toNode2");
+
+        this.equalGraphEdge1 = new GraphEdge(this.testFromNode1, this.testToNode1);
+        this.equalGraphEdge2 = new GraphEdge(this.testFromNode1, this.testToNode1);
+
+        this.notEqualGraphEdge1 = new GraphEdge(this.testFromNode1, this.testToNode1);
+        this.notEqualGraphEdge2 = new GraphEdge(this.testFromNode1, this.testToNode2);
+        this.notEqualGraphEdge3 = new GraphEdge(this.testFromNode2, this.testToNode1);
+        this.notEqualGraphEdge4 = new GraphEdge(this.testFromNode2, this.testToNode2);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.equalGraphEdge1, this.equalGraphEdge2,
+            "Assert GraphEdges with the same fromNode and the same toNode are equal");
+        test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge2,
+            "Assert GraphEdges with the same fromNode but different toNodes are not equal");
+        test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge3,
+            "Assert GraphEdges with different fromNodes but the same toNode are not equal");
+        test.assertNotEqual(this.notEqualGraphEdge1, this.notEqualGraphEdge4,
+            "Assert GraphEdges with different fromNodes and different toNodes are not equal");
+    }
+};
+annotate(graphEdgeEqualityTest).with(
+    annotation("Test").params("GraphEdge equality test")
+);
+
+
+/**
+ * This tests
+ * 1) That GraphNodes with the same function and context have the same hash code
+ */
+var graphNodeHashCodeEqualityTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testFromNode = new GraphNode("fromNode");
+        this.testToNode = new GraphNode("toNode");
+
+        this.graphEdge1 = new GraphEdge(this.testFromNode, this.testToNode);
+        this.graphEdge2 = new GraphEdge(this.testFromNode, this.testToNode);
+    },
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.graphEdge1.hashCode(), this.graphEdge2.hashCode(),
+            "Assert GraphNodes with the same value have equal hash codes");
+    }
+};
+annotate(graphNodeHashCodeEqualityTest).with(
+    annotation("Test").params("GraphEdge hash code equality test")
+);

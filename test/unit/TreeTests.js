@@ -2,44 +2,52 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Tree = require('../../lib/Tree');
 var TreeNode = require('../../lib/TreeNode');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var TreeTests = {
-    /**
-     * This tests
-     * 1) Walking a tree
-     * 2) That the nodes are walked in the correct top down depth first order.
-     */
-    treeWalkOrderTest: annotate(function() {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
 
-        var tree = new Tree();
-        var rootTreeNode = new TreeNode("rootNode");
-        var child1ofRootNode = new TreeNode("child1ofRootNode");
-        var child2ofRootNode =  new TreeNode("child2ofRootNode");
-        var child1ofChild1ofRootNode = new TreeNode("child1ofChild1ofRootNode");
-        var child2ofChild1ofRootNode = new TreeNode("child2ofChild1ofRootNode");
-        var child3ofChild1ofRootNode = new TreeNode("child3ofChild1ofRootNode");
-        var child1ofChild2ofChild1ofRootNode = new TreeNode("child1ofChild2ofChild1ofRootNode");
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        tree.setRootNode(rootTreeNode);
-        rootTreeNode.addChildNode(child1ofRootNode);
-        rootTreeNode.addChildNode(child2ofRootNode);
-        child1ofRootNode.addChildNode(child1ofChild1ofRootNode);
-        child1ofRootNode.addChildNode(child2ofChild1ofRootNode);
-        child1ofRootNode.addChildNode(child3ofChild1ofRootNode);
-        child2ofChild1ofRootNode.addChildNode(child1ofChild2ofChild1ofRootNode);
+/**
+ * This tests
+ * 1) Walking a tree
+ * 2) That the nodes are walked in the correct top down depth first order.
+ */
+var treeWalkOrderTest = {
 
-        var expectedWalkOrder = [
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.tree = new Tree();
+        this.rootTreeNode = new TreeNode("rootNode");
+        this.child1ofRootNode = new TreeNode("child1ofRootNode");
+        this.child2ofRootNode =  new TreeNode("child2ofRootNode");
+        this.child1ofChild1ofRootNode = new TreeNode("child1ofChild1ofRootNode");
+        this.child2ofChild1ofRootNode = new TreeNode("child2ofChild1ofRootNode");
+        this.child3ofChild1ofRootNode = new TreeNode("child3ofChild1ofRootNode");
+        this.child1ofChild2ofChild1ofRootNode = new TreeNode("child1ofChild2ofChild1ofRootNode");
+
+        this.tree.setRootNode(this.rootTreeNode);
+        this.rootTreeNode.addChildNode(this.child1ofRootNode);
+        this.rootTreeNode.addChildNode(this.child2ofRootNode);
+        this.child1ofRootNode.addChildNode(this.child1ofChild1ofRootNode);
+        this.child1ofRootNode.addChildNode(this.child2ofChild1ofRootNode);
+        this.child1ofRootNode.addChildNode(this.child3ofChild1ofRootNode);
+        this.child2ofChild1ofRootNode.addChildNode(this.child1ofChild2ofChild1ofRootNode);
+
+        this.expectedWalkOrder = [
             "rootNode",
             "child1ofRootNode",
             "child1ofChild1ofRootNode",
@@ -48,29 +56,26 @@ var TreeTests = {
             "child3ofChild1ofRootNode",
             "child2ofRootNode"
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
+    test: function(test) {
         var actualWalkOrder = [];
-        tree.walk(function(value) {
+        this.tree.walk(function(value) {
             actualWalkOrder.push(value);
         });
 
-        this.assertEqual(actualWalkOrder.length, expectedWalkOrder.length,
+        test.assertEqual(actualWalkOrder.length, this.expectedWalkOrder.length,
             "Assert the walk took the correct number of steps");
         for (var i = 0, size = actualWalkOrder.length; i < size; i++) {
-            this.assertEqual(actualWalkOrder[i], expectedWalkOrder[i],
-                "Assert Tree walk step '" + expectedWalkOrder[i] + "' was performed in the correct order");
+            test.assertEqual(actualWalkOrder[i], this.expectedWalkOrder[i],
+                "Assert Tree walk step '" + this.expectedWalkOrder[i] + "' was performed in the correct order");
         }
-
-    }).with('@Test("Tree walk order test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = TreeTests;
+annotate(treeWalkOrderTest).with(
+    annotation("Test").params("Tree walk order test")
+);

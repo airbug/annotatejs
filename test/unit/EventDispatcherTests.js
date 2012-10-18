@@ -2,251 +2,289 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var EventDispatcher = require('../../lib/EventDispatcher');
 var Event = require('../../lib/Event');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var EventDispatcherTests = {
-
-    /**
-     * This tests
-     * 1) Instantiating an EventDispatcher
-     * 2) That the dispatcher target is set to itself if no target is passed in during instantiation
-     * 3) That the dispatcher target is set to the value passed in during instantiation
-     */
-    eventDispatcherInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var eventDispatcherWithoutTarget = new EventDispatcher();
-        var testTarget = {};
-        var eventDispatcherWithTarget = new EventDispatcher(testTarget);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(eventDispatcherWithoutTarget.getParentDispatcher(), undefined,
+/**
+ * This tests
+ * 1) Instantiating an EventDispatcher
+ * 2) That the dispatcher target is set to itself if no target is passed in during instantiation
+ * 3) That the dispatcher target is set to the value passed in during instantiation
+ */
+var eventDispatcherInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.eventDispatcherWithoutTarget = new EventDispatcher();
+        this.testTarget = {};
+        this.eventDispatcherWithTarget = new EventDispatcher(this.testTarget);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.eventDispatcherWithoutTarget.getParentDispatcher(), undefined,
             "Assert parent dispatcher defaults to undefined");
-        this.assertEqual(eventDispatcherWithoutTarget.getTarget(), eventDispatcherWithoutTarget,
+        test.assertEqual(this.eventDispatcherWithoutTarget.getTarget(), this.eventDispatcherWithoutTarget,
             "Assert dispatcher target is set to itself if no target is passed in during instantiation");
-        this.assertEqual(eventDispatcherWithTarget.getTarget(), testTarget,
+        test.assertEqual(this.eventDispatcherWithTarget.getTarget(), this.testTarget,
             "Assert dispatcher target is set to the target passed in during instantiation");
+    }
+};
+annotate(eventDispatcherInstantiationTest).with(
+    annotation("Test").params("EventDispatcher instantiation test")
+);
 
 
-    }).with('@Test("EventDispatcher instantiation test")'),
+/**
+ * This tests
+ * 1) Adding and event listener
+ * 2) Dispatching a simple event
+ */
+var eventDispatcherSimpleAddEventListenerDispatchEventTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.eventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testEventData = "testEventData";
+        this.testEvent = new Event(this.testEventType, this.testEventData);
+
+        this.calledVar = false;
+        this.testContextVar = "some value";
+        this.testListenerContext = {
+            testContextVar: this.testContextVar
+        };
+    },
 
 
-    /**
-     * This tests
-     * 1) Adding and event listener
-     * 2) Dispatching a simple event
-     */
-    eventDispatcherSimpleAddEventListenerDispatchEventTest: annotate(function() {
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var eventDispatcher = new EventDispatcher();
-        var testEventType = "testEventType";
-        var testEventData = "testEventData";
-        var testEvent = new Event(testEventType, testEventData);
-
-        var calledVar = false;
-        var testContextVar = "some value";
-        var _test = this;
-        var testListenerFunction = function(event) {
-            calledVar = true;
-            _test.assertEqual(this.testContextVar, testContextVar,
+    test: function(test) {
+        var _this = this;
+        this.testListenerFunction = function(event) {
+            _this.calledVar = true;
+            test.assertEqual(this.testContextVar, _this.testContextVar,
                 "Assert the listener function was called in the listener context");
-            _test.assertEqual(event.getType(), testEventType,
+            test.assertEqual(event.getType(), _this.testEventType,
                 "Assert event type received was the event type published");
-            _test.assertEqual(event.getData(), testEventData,
+            test.assertEqual(event.getData(), _this.testEventData,
                 "Assert event data received was the event data published");
-            _test.assertEqual(event.getTarget(), eventDispatcher,
+            test.assertEqual(event.getTarget(), _this.eventDispatcher,
                 "Assert event target is the dispatcher that dispatched the event");
         };
-        var testListenerContext = {
-            testContextVar: testContextVar
-        };
+        this.eventDispatcher.addEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
+        this.eventDispatcher.dispatchEvent(this.testEvent);
+        test.assertTrue(this.calledVar, "Assert listener function was called.");
+    }
+};
+annotate(eventDispatcherSimpleAddEventListenerDispatchEventTest).with(
+    annotation("Test").params("EventDispatcher simple add event listener and dispatch event test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) Adding an anonymous event listener
+ * 2) Dispatching a simple event with anonymous listeners
+ */
+var eventDispatcherAddAnonymousEventListenerDispatchEventTest = {
 
-        eventDispatcher.addEventListener(testEventType, testListenerFunction, testListenerContext);
-        eventDispatcher.dispatchEvent(testEvent);
-        this.assertTrue(calledVar, "Assert listener function was called.");
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-    }).with('@Test("EventDispatcher simple add event listener and dispatch event test")'),
+    setup: function() {
+        this.eventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testEventData = "testEventData";
+        this.testEvent = new Event(this.testEventType, this.testEventData);
+        this.calledVar = false;
+    },
 
-    /**
-     * This tests
-     * 1) Adding an anonymous event listener
-     * 2) Dispatching a simple event with anonymous listeners
-     */
-    eventDispatcherAddAnonymousEventListenerDispatchEventTest: annotate(function() {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        var eventDispatcher = new EventDispatcher();
-        var testEventType = "testEventType";
-        var testEventData = "testEventData";
-        var testEvent = new Event(testEventType, testEventData);
-
-        var calledVar = false;
-        var _test = this;
-        var testListenerFunction = function(event) {
-            calledVar = true;
-            _test.assertEqual(event.getType(), testEventType,
+    test: function(test) {
+        var _this = this;
+        this.testListenerFunction = function(event) {
+            _this.calledVar = true;
+            test.assertEqual(event.getType(), _this.testEventType,
                 "Assert event type received was the event type published");
-            _test.assertEqual(event.getData(), testEventData,
+            test.assertEqual(event.getData(), _this.testEventData,
                 "Assert event data received was the event data published");
-            _test.assertEqual(event.getTarget(), eventDispatcher,
+            test.assertEqual(event.getTarget(), _this.eventDispatcher,
                 "Assert event target is the dispatcher that dispatched the event");
         };
+        this.eventDispatcher.addEventListener(this.testEventType, this.testListenerFunction);
+        this.eventDispatcher.dispatchEvent(this.testEvent);
+        test.assertTrue(this.calledVar, "Assert listener function was called.");
+    }
+};
+annotate(eventDispatcherAddAnonymousEventListenerDispatchEventTest).with(
+    annotation("Test").params("EventDispatcher add anonymous event listener and dispatch event test")
+);
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) That an event does not bubble when bubbles is false on dispatchEvent
+ */
+var eventDispatcherDispatchEventBubblesFalseTest = {
 
-        eventDispatcher.addEventListener(testEventType, testListenerFunction);
-        eventDispatcher.dispatchEvent(testEvent);
-        this.assertTrue(calledVar, "Assert listener function was called.");
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-    }).with('@Test("EventDispatcher add anonymous event listener and dispatch event test")'),
-
-    /**
-     * This tests
-     * 1) That an event does not bubble when bubbles is false on dispatchEvent
-     */
-    eventDispatcherDispatchEventBubblesFalseTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testChildEventDispatcher = new EventDispatcher();
-        var testParentEventDispatcher = new EventDispatcher();
-        var testEventType = "testEventType";
-        var testEventData = "testEventData";
-        var testEvent = new Event(testEventType, testEventData);
-        var testBubbles = false;
-        var childCalledVar = false;
-        var testChildListenerFunction = function(event) {
-            childCalledVar = true;
+    setup: function() {
+        this.testChildEventDispatcher = new EventDispatcher();
+        this.testParentEventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testEventData = "testEventData";
+        this.testEvent = new Event(this.testEventType, this.testEventData);
+        this.testBubbles = false;
+        this.childCalledVar = false;
+        var _this = this;
+        this.testChildListenerFunction = function(event) {
+            _this.childCalledVar = true;
         };
-        var parentCalledVar = false;
-        var testParentListenerFunction = function(event) {
-            parentCalledVar = true;
+        this.parentCalledVar = false;
+        this.testParentListenerFunction = function(event) {
+            _this.parentCalledVar = true;
         };
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        testChildEventDispatcher.setParentDispatcher(testParentEventDispatcher);
-        testChildEventDispatcher.addEventListener(testEventType, testChildListenerFunction);
-        testParentEventDispatcher.addEventListener(testEventType, testParentListenerFunction);
-        testChildEventDispatcher.dispatchEvent(testEvent, testBubbles);
-        this.assertTrue(childCalledVar,
+    test: function(test) {
+        this.testChildEventDispatcher.setParentDispatcher(this.testParentEventDispatcher);
+        this.testChildEventDispatcher.addEventListener(this.testEventType, this.testChildListenerFunction);
+        this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
+        this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
+        test.assertTrue(this.childCalledVar,
             "Assert listener function on child dispatcher was called when bubbles is false.");
-        this.assertFalse(parentCalledVar,
+        test.assertFalse(this.parentCalledVar,
             "Assert listener function on parent dispatcher was not called when bubbles is false.");
+    }
+};
+annotate(eventDispatcherDispatchEventBubblesFalseTest).with(
+    annotation("Test").params("EventDispatcher dispatch event with bubbles false test")
+);
 
-    }).with('@Test("EventDispatcher dispatch event with bubbles false test")'),
 
-    /**
-     * This tests
-     * 1) That an event does bubble when bubbles is true on dispatchEvent
-     */
-    eventDispatcherDispatchEventBubblesTrueTest: annotate(function() {
+/**
+ * This tests
+ * 1) That an event does bubble when bubbles is true on dispatchEvent
+ */
+var eventDispatcherDispatchEventBubblesTrueTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var testChildEventDispatcher = new EventDispatcher();
-        var testParentEventDispatcher = new EventDispatcher();
-        var testEventType = "testEventType";
-        var testEventData = "testEventData";
-        var testEvent = new Event(testEventType, testEventData);
-        var testBubbles = true;
-        var childCalledVar = false;
-        var testChildListenerFunction = function(event) {
-            childCalledVar = true;
+    setup: function() {
+        var _this = this;
+        this.testChildEventDispatcher = new EventDispatcher();
+        this.testParentEventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testEventData = "testEventData";
+        this.testEvent = new Event(this.testEventType, this.testEventData);
+        this.testBubbles = true;
+        this.childCalledVar = false;
+        this.testChildListenerFunction = function(event) {
+            _this.childCalledVar = true;
         };
-        var parentCalledVar = false;
-        var testParentListenerFunction = function(event) {
-            parentCalledVar = true;
+        this.parentCalledVar = false;
+        this.testParentListenerFunction = function(event) {
+            _this.parentCalledVar = true;
         };
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        testChildEventDispatcher.setParentDispatcher(testParentEventDispatcher);
-        testChildEventDispatcher.addEventListener(testEventType, testChildListenerFunction);
-        testParentEventDispatcher.addEventListener(testEventType, testParentListenerFunction);
-        testChildEventDispatcher.dispatchEvent(testEvent, testBubbles);
-        this.assertTrue(childCalledVar,
+    test: function(test) {
+        this.testChildEventDispatcher.setParentDispatcher(this.testParentEventDispatcher);
+        this.testChildEventDispatcher.addEventListener(this.testEventType, this.testChildListenerFunction);
+        this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
+        this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
+        test.assertTrue(this.childCalledVar,
             "Assert listener function on child dispatcher was called when bubbles is true.");
-        this.assertTrue(parentCalledVar,
+        test.assertTrue(this.parentCalledVar,
             "Assert listener function on parent dispatcher was called when bubbles is true.");
+    }
+};
+annotate(eventDispatcherDispatchEventBubblesTrueTest).with(
+    annotation("Test").params("EventDispatcher dispatch event with bubbles true test")
+);
 
-    }).with('@Test("EventDispatcher dispatch event with bubbles true test")'),
 
-    /**
-     * This tests
-     * 1) That an event does not bubble on dispatchEvent when stopPropagation is called
-     */
-    eventDispatcherDispatchEventStopPropagationTest: annotate(function() {
+/**
+ * This tests
+ * 1) That an event does not bubble on dispatchEvent when stopPropagation is called
+ */
+var eventDispatcherDispatchEventStopPropagationTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var testChildEventDispatcher = new EventDispatcher();
-        var testParentEventDispatcher = new EventDispatcher();
-        var testEventType = "testEventType";
-        var testEventData = "testEventData";
-        var testEvent = new Event(testEventType, testEventData);
-        var testBubbles = true;
-        var childCalledVar = false;
-        var testChildListenerFunction = function(event) {
-            childCalledVar = true;
+    setup: function() {
+        var _this = this;
+        this.testChildEventDispatcher = new EventDispatcher();
+        this.testParentEventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testEventData = "testEventData";
+        this.testEvent = new Event(this.testEventType, this.testEventData);
+        this.testBubbles = true;
+        this.childCalledVar = false;
+        this.testChildListenerFunction = function(event) {
+            _this.childCalledVar = true;
             event.stopPropagation();
         };
-        var parentCalledVar = false;
-        var testParentListenerFunction = function(event) {
-            parentCalledVar = true;
+        this.parentCalledVar = false;
+        this.testParentListenerFunction = function(event) {
+            _this.parentCalledVar = true;
         };
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        testChildEventDispatcher.setParentDispatcher(testParentEventDispatcher);
-        testChildEventDispatcher.addEventListener(testEventType, testChildListenerFunction);
-        testParentEventDispatcher.addEventListener(testEventType, testParentListenerFunction);
-        testChildEventDispatcher.dispatchEvent(testEvent, testBubbles);
-        this.assertTrue(childCalledVar,
+    test: function(test) {
+        this.testChildEventDispatcher.setParentDispatcher(this.testParentEventDispatcher);
+        this.testChildEventDispatcher.addEventListener(this.testEventType, this.testChildListenerFunction);
+        this.testParentEventDispatcher.addEventListener(this.testEventType, this.testParentListenerFunction);
+        this.testChildEventDispatcher.dispatchEvent(this.testEvent, this.testBubbles);
+        test.assertTrue(this.childCalledVar,
             "Assert listener function on child dispatcher was called");
-        this.assertFalse(parentCalledVar,
+        test.assertFalse(this.parentCalledVar,
             "Assert listener function on parent dispatcher was not called when stopPropagation was called on a child " +
                 "EventDispatcher");
-
-    }).with('@Test("EventDispatcher dispatch event stopPropagation test")')
-
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = EventDispatcherTests;
+annotate(eventDispatcherDispatchEventStopPropagationTest).with(
+    annotation("Test").params("EventDispatcher dispatch event stopPropagation test")
+);

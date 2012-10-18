@@ -2,46 +2,50 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var HashTableEntry = require('../../lib/HashTableEntry');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var HashTableEntryTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new HashTableEntry
-     * 2) That the "key" property was set correctly during instantiation
-     * 3) That the "value" property was set correctly during instantiation
-     */
-    hashTableEntryInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testKey = "testKey";
-        var testValue = "testValue";
-        var hashTableEntry = new HashTableEntry(testKey, testValue);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(hashTableEntry.getKey(), testKey,
+/**
+ * This tests
+ * 1) Instantiation of a new HashTableEntry
+ * 2) That the "key" property was set correctly during instantiation
+ * 3) That the "value" property was set correctly during instantiation
+ */
+var hashTableEntryInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testKey = "testKey";
+        this.testValue = "testValue";
+        this.hashTableEntry = new HashTableEntry(this.testKey, this.testValue);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.hashTableEntry.getKey(), this.testKey,
             "Assert key property was set correctly during instantiation");
-        this.assertEqual(hashTableEntry.getValue(), testValue,
+        test.assertEqual(this.hashTableEntry.getValue(), this.testValue,
             "Assert value property was set correctly during instantiation");
-
-    }).with('@Test("HashTableEntry - instantiation test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = HashTableEntryTests;
+annotate(hashTableEntryInstantiationTest).with(
+    annotation("Test").params("HashTableEntry - instantiation test")
+);

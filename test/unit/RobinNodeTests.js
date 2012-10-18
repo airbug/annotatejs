@@ -2,9 +2,9 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var Annotate = require('../../../../../lib/Annotate');
-var Class = require('../../../../../lib/Class');
-var DependencyNode = require('../../../../../lib/compiler/module/dependency/DependencyNode');
+var Annotate = require('../../lib/Annotate');
+var Class = require('../../lib/Class');
+var RobinNode = require('../../lib/RobinNode');
 
 
 //-------------------------------------------------------------------------------
@@ -16,20 +16,21 @@ var annotation = Annotate.annotation;
 
 
 //-------------------------------------------------------------------------------
-// Declare Tests
+// Declare Test
 //-------------------------------------------------------------------------------
 
 /**
  * This tests
- * 1) Instantiation of a new DependencyNode
+ * 1) Instantiation of a new RobinNode
  */
-var dependencyNodeInstantiationTest = {
+var robinNodeInstantiationTest = {
 
     // Setup Test
     //-------------------------------------------------------------------------------
 
     setup: function() {
-        this.testDependencyNode = new DependencyNode();
+        this.testValue = "some value";
+        this.testRobinNode = new RobinNode(this.testValue);
     },
 
 
@@ -37,10 +38,12 @@ var dependencyNodeInstantiationTest = {
     //-------------------------------------------------------------------------------
 
     test: function(test) {
-        test.assertTrue(Class.doesExtend(this.testDependencyNode, DependencyNode),
-            "Assert DependencyNode instance extends DependencyNode class");
+        test.assertTrue(Class.doesExtend(this.testRobinNode, RobinNode),
+            "Assert RobinNode instance extends RobinNode ");
+        test.assertEqual(this.testRobinNode.getValue(), this.testValue,
+            "Assert value was set correctly during instantiation");
     }
 };
-annotate(dependencyNodeInstantiationTest).with(
-    annotation("Test").params("DependencyNode instantiation test")
+annotate(robinNodeInstantiationTest).with(
+    annotation("Test").params("RobinNode instantiation test")
 );

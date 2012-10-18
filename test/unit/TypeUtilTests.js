@@ -2,145 +2,48 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var TypeUtil = require('../../lib/TypeUtil');
 var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
+
+
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
+
+/**
+ *
+ */
+var typeComparisonTest = {
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        TypeUtilTests.runTypeTest("array", test);
+        TypeUtilTests.runTypeTest("boolean", test);
+        TypeUtilTests.runTypeTest("function", test);
+        TypeUtilTests.runTypeTest("null", test);
+        TypeUtilTests.runTypeTest("number", test);
+        TypeUtilTests.runTypeTest("object", test);
+        TypeUtilTests.runTypeTest("string", test);
+        TypeUtilTests.runTypeTest("undefined", test);
+    }
+
+};
+annotate(typeComparisonTest).with(
+    annotation("Test").params("TypeUtil Comparison Test")
+);
+
 var TypeUtilTests = {
-
-    /**
-     *
-     */
-    isArrayTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("array", this);
-
-    }).with('@Test("TypeUtil isArray test")'),
-
-    /**
-     *
-     */
-    isBooleanTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("boolean", this);
-
-    }).with('@Test("TypeUtil isBoolean test")'),
-
-    /**
-     *
-     */
-    isFunctionTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("function", this);
-
-    }).with('@Test("TypeUtil isFunction test")'),
-
-    /**
-     *
-     */
-    isNullTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("null", this);
-
-    }).with('@Test("TypeUtil isNull test")'),
-
-    /**
-     *
-     */
-    isNumberTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("string", this);
-
-    }).with('@Test("TypeUtil isNumber test")'),
-
-    /**
-     *
-     */
-    isObjectTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("object", this);
-
-    }).with('@Test("TypeUtil isObject test")'),
-
-    /**
-     *
-     */
-    isStringTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("string", this);
-
-    }).with('@Test("TypeUtil isString test")'),
-
-    /**
-     *
-     */
-    isUndefinedTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        TypeUtilTests.runTypeTest("undefined", this);
-
-    }).with('@Test("TypeUtil isNumber test")'),
-
     runTypeTest: function(typeToTest, runningTest) {
         var typeValueSets = TypeValueSetsHelper.getTypeValueSets();
         for (var type in typeValueSets) {
@@ -175,10 +78,3 @@ var TypeUtilTests = {
         }
     }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = TypeUtilTests;

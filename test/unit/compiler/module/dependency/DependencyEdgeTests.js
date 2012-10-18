@@ -2,58 +2,61 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../../../lib/Annotate').annotate;
+var Annotate = require('../../../../../lib/Annotate');
 var Class = require('../../../../../lib/Class');
 var DependencyEdge = require('../../../../../lib/compiler/module/dependency/DependencyEdge');
 var DependencyNode = require('../../../../../lib/compiler/module/dependency/DependencyNode');
 
 
 //-------------------------------------------------------------------------------
+// Simplify References
+//-------------------------------------------------------------------------------
+
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
+
+
+//-------------------------------------------------------------------------------
 // Declare Test
 //-------------------------------------------------------------------------------
 
-var DependencyEdgeTests = {
+/**
+ * This tests
+ * 1) Instantiation of a new DependencyEdge
+ */
+var dependencyEdgeInstantiationTest = {
 
-    /**
-     * This tests
-     * 1) Instantiation of a new DependencyEdge
-     */
-    dependencyEdgeInstantiationTest: annotate(function() {
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testFromDependencyNode = new DependencyNode("fromValue");
-        var testToDependencyNode = new DependencyNode("toValue");
+    setup: function() {
+        this.testFromDependencyNode = new DependencyNode("fromValue");
+        this.testToDependencyNode = new DependencyNode("toValue");
 
         //TODO BRN: Replace these with mocks using sinon
 
-        var mockExportCode = {};
-        var mockRequireCode = {};
-        var testDependencyEdge = new DependencyEdge(testFromDependencyNode, testToDependencyNode, mockRequireCode, mockExportCode);
+        this.mockExportCode = {};
+        this.mockRequireCode = {};
+        this.testDependencyEdge = new DependencyEdge(this.testFromDependencyNode, this.testToDependencyNode, this.mockRequireCode, this.mockExportCode);
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(testDependencyEdge, DependencyEdge),
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.testDependencyEdge, DependencyEdge),
             "Assert DependencyEdge instance extends DependencyEdge class");
-        this.assertEqual(testDependencyEdge.getFromNode(), testFromDependencyNode,
+        test.assertEqual(this.testDependencyEdge.getFromNode(), this.testFromDependencyNode,
             "Assert fromNode is the value that was passed in during instantiation");
-        this.assertEqual(testDependencyEdge.getToNode(), testToDependencyNode,
+        test.assertEqual(this.testDependencyEdge.getToNode(), this.testToDependencyNode,
             "Assert toNode is the value that was passed in during instantiation");
-        this.assertEqual(testDependencyEdge.getExportCode(), mockExportCode,
+        test.assertEqual(this.testDependencyEdge.getExportCode(), this.mockExportCode,
             "Assert exportCode is the value that was passed in during instantiation");
-        this.assertEqual(testDependencyEdge.getRequireCode(), mockRequireCode,
+        test.assertEqual(this.testDependencyEdge.getRequireCode(), this.mockRequireCode,
             "Assert requireCode is the value that was passed in during instantiation");
-
-
-    }).with('@Test("DependencyEdge instantiation test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = DependencyEdgeTests;
+annotate(dependencyEdgeInstantiationTest).with(
+    annotation('Test').params("DependencyEdge instantiation test")
+);

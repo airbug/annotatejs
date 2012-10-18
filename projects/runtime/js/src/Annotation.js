@@ -19,7 +19,7 @@ var Annotation = Class.extend(Obj, {
     // Constructor
     //-------------------------------------------------------------------------------
 
-    _constructor: function(reference, type, paramList) {
+    _constructor: function(type) {
 
         this._super();
 
@@ -28,10 +28,22 @@ var Annotation = Class.extend(Obj, {
         // Declare Variables
         //-------------------------------------------------------------------------------
 
-        this.paramList = paramList;
+        /**
+         * @private
+         * @type {List<*>}
+         */
+        this.paramList = new List();
 
-        this.reference = reference;
+        /**
+         * @private
+         * @type {*}
+         */
+        this.reference = null;
 
+        /**
+         * @private
+         * @type {string}
+         */
         this.type = type;
     },
 
@@ -40,15 +52,47 @@ var Annotation = Class.extend(Obj, {
     // Getters and Setters
     //-------------------------------------------------------------------------------
 
+    /**
+     * @return {*}
+     */
     getReference: function() {
         return this.reference;
     },
 
+    /**
+     * @param {*} reference
+     */
+    setReference: function(reference) {
+        this.reference = reference;
+    },
+
+    /**
+     * @return {string}
+     */
     getType: function() {
         return this.type;
     },
 
+    /**
+     * @return {List<*>}
+     */
     getParamList: function() {
         return this.paramList;
+    },
+
+
+    //-------------------------------------------------------------------------------
+    // Class Methods
+    //-------------------------------------------------------------------------------
+
+    /**
+     * @param {...*}
+        */
+    params: function() {
+        for (var i = 0, size = arguments.length; i < size; i++) {
+            var param = arguments[i];
+            this.paramList.add(param);
+        }
+        return this;
     }
 });

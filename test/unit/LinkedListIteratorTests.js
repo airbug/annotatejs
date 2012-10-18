@@ -2,52 +2,55 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var LinkedList = require('../../lib/LinkedList');
 var LinkedListIterator = require('../../lib/LinkedListIterator');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var LinkedListIteratorTests = {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-    /**
-     *
-     */
-    linkedListIteratorPeekNextTest: annotate(function() {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        var linkedList = new LinkedList();
+/**
+ *
+ */
+var linkedListIteratorPeekNextTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.linkedList = new LinkedList();
 
         // NOTE BRN: Since we're adding to the front we want to start with the last character first otherwise we'll
         // end up backwards.
 
-        linkedList.addFront('value3');
-        linkedList.addFront('value2');
-        linkedList.addFront('value1');
-        var linkedListIterator = new LinkedListIterator(linkedList);
+        this.linkedList.addFront('value3');
+        this.linkedList.addFront('value2');
+        this.linkedList.addFront('value1');
+        this.linkedListIterator = new LinkedListIterator(this.linkedList);
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        this.assertEqual(linkedListIterator.peekNext(), 'value1',
+    test: function(test) {
+        test.assertEqual(this.linkedListIterator.peekNext(), 'value1',
             "Assert that the next value can be peeked at when we haven't moved the iterator.");
-        linkedListIterator.getNext();
-        this.assertEqual(linkedListIterator.peekNext(), 'value2',
+        this.linkedListIterator.getNext();
+        test.assertEqual(this.linkedListIterator.peekNext(), 'value2',
             "Assert that we are peeking at the next value after moving the iterator.");
-
-
-    }).with('@Test("LinkedListIterator peekNext test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = LinkedListIteratorTests;
+annotate(linkedListIteratorPeekNextTest).with(
+    annotation("Test").params("LinkedListIterator peekNext test")
+);

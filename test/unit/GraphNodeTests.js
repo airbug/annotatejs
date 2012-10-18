@@ -2,97 +2,112 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var GraphNode = require('../../lib/GraphNode');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var GraphNodeTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new GraphNode
-     */
-    graphNodeInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testValue = "some value";
-        var testGraphNode = new GraphNode(testValue);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(testGraphNode, GraphNode),
+/**
+ * This tests
+ * 1) Instantiation of a new GraphNode
+ */
+var graphNodeInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testValue = "some value";
+        this.testGraphNode = new GraphNode(this.testValue);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.testGraphNode, GraphNode),
             "Assert GraphNode instance extends GraphNode ");
-        this.assertEqual(testGraphNode.getValue(), testValue,
+        test.assertEqual(this.testGraphNode.getValue(), this.testValue,
             "Assert value was set correctly during instantiation");
-
-    }).with('@Test("GraphNode instantiation test")'),
-
-    /**
-     * This tests
-     * 1) That GraphNodes with the same value are equal
-     * 2) That GraphNodes with different values are not equal
-     */
-    graphNodeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testValue1 = "value1";
-        var testValue2 = "value2";
-
-        var equalGraphNode1 = new GraphNode(testValue1);
-        var equalGraphNode2 = new GraphNode(testValue1);
-
-        var notEqualGraphNode1 = new GraphNode(testValue1);
-        var notEqualGraphNode2 = new GraphNode(testValue2);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(equalGraphNode1, equalGraphNode2,
-            "Assert GraphNodes with the same value are equal");
-        this.assertNotEqual(notEqualGraphNode1, notEqualGraphNode2,
-            "Assert GraphNodes with different values are not equal.");
-
-    }).with('@Test("GraphNode equality test")'),
-
-    /**
-     * This tests
-     * 1) That GraphNodes with the same function and context have the same hash code
-     */
-    graphNodeHashCodeEqualityTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testValue = "value";
-        var graphNode1 = new GraphNode(testValue);
-        var graphNode2 = new GraphNode(testValue);
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertEqual(graphNode1.hashCode(), graphNode2.hashCode(),
-            "Assert GraphNodes with the same value have equal hash codes");
-
-
-    }).with('@Test("GraphNode hash code equality test")')
+    }
 };
+annotate(graphNodeInstantiationTest).with(
+    annotation("Test").params("GraphNode instantiation test")
+);
 
 
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
+/**
+ * This tests
+ * 1) That GraphNodes with the same value are equal
+ * 2) That GraphNodes with different values are not equal
+ */
+var graphNodeEqualityTest = {
 
-module.exports = GraphNodeTests;
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testValue1 = "value1";
+        this.testValue2 = "value2";
+        this.equalGraphNode1 = new GraphNode(this.testValue1);
+        this.equalGraphNode2 = new GraphNode(this.testValue1);
+        this.notEqualGraphNode1 = new GraphNode(this.testValue1);
+        this.notEqualGraphNode2 = new GraphNode(this.testValue2);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.equalGraphNode1, this.equalGraphNode2,
+            "Assert GraphNodes with the same value are equal");
+        test.assertNotEqual(this.notEqualGraphNode1, this.notEqualGraphNode2,
+            "Assert GraphNodes with different values are not equal.");
+    }
+};
+annotate(graphNodeEqualityTest).with(
+    annotation("Test").params("GraphNode equality test")
+);
+
+
+/**
+ * This tests
+ * 1) That GraphNodes with the same function and context have the same hash code
+ */
+var graphNodeHashCodeEqualityTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testValue = "value";
+        this.graphNode1 = new GraphNode(this.testValue);
+        this.graphNode2 = new GraphNode(this.testValue);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.graphNode1.hashCode(), this.graphNode2.hashCode(),
+            "Assert GraphNodes with the same value have equal hash codes");
+    }
+};
+annotate(graphNodeHashCodeEqualityTest).with(
+    annotation("Test").params("GraphNode hash code equality test")
+);

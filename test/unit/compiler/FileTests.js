@@ -2,52 +2,66 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../lib/Annotate').annotate;
+var Annotate = require('../../../lib/Annotate');
 var Directory = require('../../../lib/compiler/Directory');
 var File = require('../../../lib/compiler/File');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var FileTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new File
-     * 2) That the "getAbsoluteFilePath" value is correct
-     */
-    fileInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testAbsoluteFilePath = "/myfile.js";
-        var testFile = new File(testAbsoluteFilePath);
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertEqual(testFile.getAbsoluteFilePath(), "/myfile.js",
+/**
+ * This tests
+ * 1) Instantiation of a new File
+ * 2) That the "getAbsoluteFilePath" value is correct
+ */
+var fileInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testAbsoluteFilePath = "/myfile.js";
+        this.testFile = new File(this.testAbsoluteFilePath);
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertEqual(this.testFile.getAbsoluteFilePath(), "/myfile.js",
             "Assert getAbsoluteFilePath returns expected value after instantiation");
+    }
+};
+annotate(fileInstantiationTest).with(
+    annotation("Test").params("File instantiation test")
+);
 
-    }).with('@Test("File instantiation test")'),
 
+/**
+ * This tests
+ * 1)
+ */
+var fileGetFilePathToAnotherFileTest = {
 
-    /**
-     * This tests
-     * 1)
-     */
-    fileGetFilePathToAnotherFileTest: annotate(function() {
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    setup: function() {
 
         // NOTE BRN: For now only absolute file paths are supported
 
-        var testValues = [
+        this.testValues = [
             {
                 fromFilePath: '/fromFile.js',
                 toFilePath: '/toFile.js',
@@ -79,27 +93,23 @@ var FileTests = {
                 expectedFilePath: '../anotherdir/toFile.js'
             }
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        var _this = this;
-        testValues.forEach(function(testValue) {
+    test: function(test) {
+        this.testValues.forEach(function(testValue) {
             var testFromFile = new File(testValue.fromFilePath);
             var testToFile = new File(testValue.toFilePath);
             var resultFilePath = testFromFile.getFilePathToAnotherFile(testToFile);
-            _this.assertEqual(resultFilePath, testValue.expectedFilePath,
+            test.assertEqual(resultFilePath, testValue.expectedFilePath,
                 "Assert result of getFilePathToAnotherFile using fromFile '" + testValue.fromFilePath + "' and toFile '" +
                  testValue.toFilePath + "' is correct");
         });
-
-    }).with('@Test("File getFilePathToAnotherFile test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = FileTests;
+annotate(fileGetFilePathToAnotherFileTest).with(
+    annotation("Test").params("File getFilePathToAnotherFile test")
+);

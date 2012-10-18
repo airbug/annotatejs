@@ -2,74 +2,51 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var IdGenerator = require('../../lib/IdGenerator');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var IdGeneratorTests = {
-
-    /**
-     * This tests...
-     * 1) Generating a new id is always a different id.
-     */
-    generateIdTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var id1 = IdGenerator.generateId();
-        var id2 = IdGenerator.generateId();
-        var id3 = IdGenerator.generateId();
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertNotEqual(id1, id2,
+
+/**
+ * This tests...
+ * 1) Generating a new id is always a different id.
+ */
+var generateIdTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.id1 = IdGenerator.generateId();
+        this.id2 = IdGenerator.generateId();
+        this.id3 = IdGenerator.generateId();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertNotEqual(this.id1, this.id2,
             "Assert the first id generated and the second id generated are not equal");
-        this.assertNotEqual(id2, id3,
+        test.assertNotEqual(this.id2, this.id3,
             "Assert the second id generated and the third id generated are not equal");
-        this.assertNotEqual(id1, id3,
+        test.assertNotEqual(this.id1, this.id3,
             "Assert the third id generated and the first id generated are not equal");
-
-    }).with('@Test(" IdGenerator generate id test")')
-
-
-    /*IdGenerator.generateId = function() {
-    return IdGenerator.lastId++;
-};
-
-IdGenerator.injectId = function(obj) {
-    if (obj !== null && obj !== undefined) {
-        if (!obj._internalId) {
-            Object.defineProperty(obj, "_internalId", {
-                value : IdGenerator.generateId(),
-                writable : false,
-                enumerable : false,
-                configurable : false
-            });
-        } else {
-            throw new Error("Trying to inject an id in to a object that already has one.");
-        }
     }
 };
-
-IdGenerator.ensureId = function(obj) {
-    if (obj !== null && obj !== undefined) {
-        if (!obj._internalId) {
-            IdGenerator.injectId(obj);
-        }
-    }
-}; */
-};
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = IdGeneratorTests;
+annotate(generateIdTest).with(
+    annotation("Test").params("IdGenerator generate id test")
+);

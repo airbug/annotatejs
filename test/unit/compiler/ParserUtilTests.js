@@ -2,25 +2,33 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../../lib/Annotate').annotate;
+var Annotate = require('../../../lib/Annotate');
 var Parser = require('../../../lib/compiler/Parser');
 var ParserUtil = require('../../../lib/compiler/ParserUtil');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var ParserUtilTests = {
-    /**
-     *
-     */
-    parseIdentifierTokenTest: annotate(function() {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
 
-        var parseTests = [
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
+
+/**
+ *
+ */
+var parseIdentifierTokenTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.parseTests = [
             {
                 value: "a",
                 expected: "a"
@@ -62,33 +70,40 @@ var ParserUtilTests = {
                 expected: "_abc"
             }
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        var _this = this;
-        parseTests.forEach(function(parseTest) {
+    test: function(test) {
+        this.parseTests.forEach(function(parseTest) {
             var characterList = Parser.generateCharacterList(parseTest.value);
             var characterListIterator = characterList.iterator();
             var identifierToken = ParserUtil.parseIdentifierToken(characterListIterator, characterList);
-            _this.assertEqual(identifierToken.getCharacterListViewAsString(), parseTest.expected,
+            test.assertEqual(identifierToken.getCharacterListViewAsString(), parseTest.expected,
                 "Assert expected identifier '" + parseTest.expected + "' was parsed from string '" +
                     parseTest.value + "'.");
         });
-    }).with('@Test("Parse identifier token test")'),
+    }
+};
+annotate(parseIdentifierTokenTest).with(
+    annotation("Test").params("Parse identifier token test")
+);
 
-    //TODO BRN: Add assertThrows tests for identifier parse errors
 
-    /**
-     *
-     */
-    parseStringTokenTest: annotate(function() {
+//TODO BRN: Add assertThrows tests for identifier parse errors
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+/**
+ *
+ */
+var parseStringTokenTest = {
 
-        var parseTests = [
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.parseTests = [
             {
                 value: "'abc'",
                 expected: "'abc'"
@@ -122,28 +137,23 @@ var ParserUtilTests = {
                 expected: "\"abc\\'def\""
             }
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        var _this = this;
-        parseTests.forEach(function(parseTest) {
+    test: function(test) {
+        this.parseTests.forEach(function(parseTest) {
             var characterList = Parser.generateCharacterList(parseTest.value);
             var characterListIterator = characterList.iterator();
             var token = ParserUtil.parseStringToken(characterListIterator, characterList);
-            _this.assertEqual(token.getCharacterListViewAsString(), parseTest.expected,
+            test.assertEqual(token.getCharacterListViewAsString(), parseTest.expected,
                 "Assert expected identifier '" + parseTest.expected + "' was parsed from string '" +
                     parseTest.value + "'.");
         });
-
-
-    }).with('@Test("Parse string token test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = ParserUtilTests;
+annotate(parseStringTokenTest).with(
+    annotation("Test").params("Parse string token test")
+);

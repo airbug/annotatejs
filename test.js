@@ -4,7 +4,7 @@
 
 var fs = require('fs');
 
-var AnnotateUnit = require('./lib/unit/AnnotateUnit');
+var BugUnit = require('./lib/unit/BugUnit');
 var List = require('./lib/List');
 
 
@@ -17,7 +17,7 @@ var projectDir = process.cwd();
 
 requireModulesFromDirectory(projectDir + "/test");
 
-var reportCard = AnnotateUnit.runTests(true);
+var reportCard = BugUnit.runTests(true);
 
 console.log("Number of PASSED tests: " + reportCard.numberPassedTests());
 console.log("Number of FAILED tests: " + reportCard.numberFailedTests());

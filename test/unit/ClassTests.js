@@ -2,7 +2,7 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var IHashCode = require('../../lib/IHashCode');
 var Interface = require('../../lib/Interface');
@@ -11,161 +11,189 @@ var TypeUtil = require('../../lib/TypeUtil');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var ClassTests = {
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
-    /**
-     *
-     */
-    classExtendObjTest: annotate(function() {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        var NewClass = Class.extend(Obj, {
+/**
+ *
+ */
+var classExtendObjTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.NewClass = Class.extend(Obj, {
             someTestFunction1: function() {
-
+    
             },
             someTestFunction2: function() {
-
+    
             }
         });
-        var instance = new NewClass();
+        this.instance = new this.NewClass();
+    },
+    
 
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertTrue(TypeUtil.isFunction(NewClass.prototype.someTestFunction1),
+    test: function(test) {
+        test.assertTrue(TypeUtil.isFunction(this.NewClass.prototype.someTestFunction1),
             "Assert function added to class is function and is present in class prototype");
-        this.assertTrue(TypeUtil.isFunction(NewClass.prototype.someTestFunction2),
+        test.assertTrue(TypeUtil.isFunction(this.NewClass.prototype.someTestFunction2),
             "Assert second function added to class is function and is present in class prototype");
-        this.assertTrue(TypeUtil.isFunction(instance.someTestFunction1),
+        test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction1),
             "Assert function added to class is present in class instance");
-        this.assertTrue(TypeUtil.isFunction(instance.someTestFunction2),
+        test.assertTrue(TypeUtil.isFunction(this.instance.someTestFunction2),
             "Assert second function added to class is present in class instance");
-        this.assertTrue(Class.doesExtend(instance, Obj),
+        test.assertTrue(Class.doesExtend(this.instance, Obj),
             "Assert instance of new class extends base level Object class");
-        this.assertTrue(Class.doesImplement(instance, IHashCode),
+        test.assertTrue(Class.doesImplement(this.instance, IHashCode),
             "Assert instance of new class implements IHashCode");
+    }
+};
+annotate(classExtendObjTest).with(
+    annotation("Test").params("Class extend Obj test")
+);
 
-    }).with('@Test("Class extend Obj test")'),
 
-    /**
-     *
-     */
-    classExtendTest: annotate(function() {
+/**
+ *
+ */
+var classExtendTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var ParentClass = Class.extend(Obj, {
+    setup: function() {
+        this.ParentClass = Class.extend(Obj, {
             someTestFunction1: function() {
-
+    
             },
             someTestFunction2: function() {
-
+    
             }
         });
-        var ChildClass = Class.extend(ParentClass, {
+        this.ChildClass = Class.extend(this.ParentClass, {
             someTestFunction1: function() {
-
+    
             },
             someTestFunction3: function() {
-
+    
             }
         });
-        var instanceChildClass = new ChildClass();
+        this.instanceChildClass = new this.ChildClass();
+    },
+    
 
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertTrue(TypeUtil.isFunction(ChildClass.prototype.someTestFunction1),
+    test: function(test) {
+        test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction1),
             "Assert override function added to child class is function and is present in child class prototype");
-        this.assertTrue(TypeUtil.isFunction(ChildClass.prototype.someTestFunction2),
+        test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction2),
             "Assert function of parent class is function and is present in child class prototype");
-        this.assertTrue(TypeUtil.isFunction(ChildClass.prototype.someTestFunction2),
+        test.assertTrue(TypeUtil.isFunction(this.ChildClass.prototype.someTestFunction2),
             "Assert function added to child class is function and is present in child class prototype");
-        this.assertTrue(TypeUtil.isFunction(instanceChildClass.someTestFunction1),
+        test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction1),
             "Assert override function added to child class is present in child class instance");
-        this.assertTrue(TypeUtil.isFunction(instanceChildClass.someTestFunction2),
+        test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction2),
             "Assert function of parent class is present in child class instance");
-        this.assertTrue(TypeUtil.isFunction(instanceChildClass.someTestFunction3),
+        test.assertTrue(TypeUtil.isFunction(this.instanceChildClass.someTestFunction3),
             "Assert function added to child class is present in child class instance");
-
-        this.assertTrue(Class.doesExtend(instanceChildClass, Obj),
+    
+        test.assertTrue(Class.doesExtend(this.instanceChildClass, Obj),
             "Assert child class extends base level Object class");
-        this.assertTrue(Class.doesExtend(instanceChildClass, Obj),
+        test.assertTrue(Class.doesExtend(this.instanceChildClass, Obj),
             "Assert child class extends parent class");
+    }
+};
+annotate(classExtendTest).with(
+    annotation("Test").params("Class extend test")
+);
 
-    }).with('@Test("Class extend test")'),
 
-    /**
-     *
-     */
-    classImplementTest: annotate(function() {
+/**
+ *
+ */
+var classImplementTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var TestInterface = Interface.declare({
+    setup: function() {
+        this.TestInterface = Interface.declare({
             someInterfaceFunction: function() {
-
+    
             }
         });
-        var TestClass = Class.extend(Obj, {
+        this.TestClass = Class.extend(Obj, {
             someInterfaceFunction: function() {
-
+    
             },
             someFunction: function() {
-
+    
             }
         });
-        Class.implement(TestClass, TestInterface);
-        var instance = new TestClass();
+        Class.implement(this.TestClass, this.TestInterface);
+        this.instance = new this.TestClass();
+    },
+    
 
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        this.assertTrue(TypeUtil.isFunction(TestClass.prototype.someFunction),
+    test: function(test) {
+        test.assertTrue(TypeUtil.isFunction(this.TestClass.prototype.someFunction),
             "Assert function added to class is function and is present in class prototype");
-        this.assertTrue(TypeUtil.isFunction(TestClass.prototype.someInterfaceFunction),
+        test.assertTrue(TypeUtil.isFunction(this.TestClass.prototype.someInterfaceFunction),
             "Assert interface function added to class is function and is present in class prototype");
-        this.assertEqual(TestClass.getInterfaces().length, 2,
+        test.assertEqual(this.TestClass.getInterfaces().length, 2,
             "Assert we have 2 interfaces listed on TestClass (IHashCode and TestInterface)");
-        this.assertEqual(TestClass.getInterfaces()[1], TestInterface,
+        test.assertEqual(this.TestClass.getInterfaces()[1], this.TestInterface,
             "Assert test interface is listed in TestClass interfaces");
-        this.assertTrue(TypeUtil.isFunction(instance.someFunction),
+        test.assertTrue(TypeUtil.isFunction(this.instance.someFunction),
             "Assert function added to class is present in class instance");
-        this.assertTrue(TypeUtil.isFunction(instance.someInterfaceFunction),
+        test.assertTrue(TypeUtil.isFunction(this.instance.someInterfaceFunction),
             "Assert interface function added to class is present in class instance");
-        this.assertEqual(instance.getClass().getInterfaces().length, 2,
+        test.assertEqual(this.instance.getClass().getInterfaces().length, 2,
             "Assert we have 2 interfaces listed in instance of TestClass through getClass()");
-        this.assertEqual(instance.getClass().getInterfaces()[1], TestInterface,
+        test.assertEqual(this.instance.getClass().getInterfaces()[1], this.TestInterface,
             "Assert TestInterface is listed in interfaces on instance of TestClass through getClass()");
-        this.assertTrue(Class.doesImplement(instance, TestInterface),
+        test.assertTrue(Class.doesImplement(this.instance, this.TestInterface),
             "Assert Class.doesImplement returns true for instance implementing TestInterface");
+    }
+};
+annotate(classImplementTest).with(
+    annotation("Test").params("Class implement test")
+);
 
-    }).with('@Test("Class implement test")'),
 
-    /**
-     *
-     */
-    classDoesImplementTest: annotate(function() {
+/**
+ *
+ */
+var classDoesImplementTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var TestInterface = Interface.declare({
+    setup: function() {
+        this.TestInterface = Interface.declare({
             someInterfaceFunction: function() {
 
             }
         });
-        var TestClass = Class.extend(Obj, {
+        this.TestClass = Class.extend(Obj, {
             someInterfaceFunction: function() {
 
             },
@@ -173,61 +201,65 @@ var ClassTests = {
 
             }
         });
-        Class.implement(TestClass, TestInterface);
-        var instance = new TestClass();
-        var valuesThatDoNotImplement = [
+        Class.implement(this.TestClass, this.TestInterface);
+        this.instance = new this.TestClass();
+        this.valuesThatDoNotImplement = [
             {},
             [],
             function() {},
             "some string",
             12345
         ];
+    },
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+    // Run Test
+    //-------------------------------------------------------------------------------
 
-        this.assertEqual(Class.doesImplement(instance, TestInterface), true,
+    test: function(test) {
+        test.assertEqual(Class.doesImplement(this.instance, this.TestInterface), true,
             "Assert that and instance of our test class does implement the test interface");
         var _this = this;
-        valuesThatDoNotImplement.forEach(function(value) {
-            _this.assertEqual(Class.doesImplement(value, TestInterface), false,
+        this.valuesThatDoNotImplement.forEach(function(value) {
+            test.assertEqual(Class.doesImplement(value, _this.TestInterface), false,
                 "Assert that the value '" + value + "' does not implement the test interface");
         });
-    }).with('@Test("Class doesImplement test")'),
+    }
+};
+annotate(classDoesImplementTest).with(
+    annotation("Test").params("Class doesImplement test")
+);
 
-    /**
-     *
-     */
-    classConstructorTest: annotate(function() {
+/**
+ *
+ */
+var classConstructorTest = {
 
-        // Setup Test
-        //-------------------------------------------------------------------------------
+    // Setup Test
+    //-------------------------------------------------------------------------------
 
-        var constructorCalled = false;
-        var _test = this;
-        var TestClass = Class.extend(Obj, {
+    setup: function() {
+        this.constructorCalled = false;
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        var _this = this;
+        this.TestClass = Class.extend(Obj, {
             _constructor: function() {
-                constructorCalled = true;
-                _test.assertEqual(this.getClass(), TestClass,
+                _this.constructorCalled = true;
+                test.assertEqual(this.getClass(), _this.TestClass,
                     "Assert that the class is available during construction");
             }
         });
-
-
-        // Run Test
-        //-------------------------------------------------------------------------------
-
-        var instance = new TestClass();
-        this.assertEqual(constructorCalled, true,
+        this.instance = new this.TestClass();
+        test.assertEqual(this.constructorCalled, true,
             "Assert that the constructor was called during instantiation");
-
-    }).with('@Test("Class constructor test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = ClassTests;
+annotate(classConstructorTest).with(
+    annotation("Test").params("Class constructor test")
+);

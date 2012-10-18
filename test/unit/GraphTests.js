@@ -2,41 +2,45 @@
 // Requires
 //-------------------------------------------------------------------------------
 
-var annotate = require('../../lib/Annotate').annotate;
+var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Graph = require('../../lib/Graph');
 
 
 //-------------------------------------------------------------------------------
-// Declare Test
+// Simplify References
 //-------------------------------------------------------------------------------
 
-var GraphTests = {
-
-    /**
-     * This tests
-     * 1) Instantiation of a new Graph
-     */
-    graphInstantiationTest: annotate(function() {
-
-        // Setup Test
-        //-------------------------------------------------------------------------------
-
-        var testGraph = new Graph();
+var annotate = Annotate.annotate;
+var annotation = Annotate.annotation;
 
 
-        // Run Test
-        //-------------------------------------------------------------------------------
+//-------------------------------------------------------------------------------
+// Declare Tests
+//-------------------------------------------------------------------------------
 
-        this.assertTrue(Class.doesExtend(testGraph, Graph),
+/**
+ * This tests
+ * 1) Instantiation of a new Graph
+ */
+var graphInstantiationTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.testGraph = new Graph();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertTrue(Class.doesExtend(this.testGraph, Graph),
             "Assert Graph instance extends Graph class");
-
-    }).with('@Test("Graph instantiation test")')
+    }
 };
-
-
-//-------------------------------------------------------------------------------
-// Module Export
-//-------------------------------------------------------------------------------
-
-module.exports = GraphTests;
+annotate(graphInstantiationTest).with(
+    annotation("Test").params("Graph instantiation test")
+);

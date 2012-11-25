@@ -6,6 +6,7 @@ var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var List = require('../../lib/List');
 var Obj = require('../../lib/Obj');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var Obj = require('../../lib/Obj');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ var listAddTest = {
     }
 };
 annotate(listAddTest).with(
-    annotation("Test").params("List add test")
+    test().name("List add test")
 );
 
 
@@ -90,7 +91,7 @@ var listContainsTest = {
     }
 };
 annotate(listContainsTest).with(
-    annotation("Test").params("List contains test")
+    test().name("List contains test")
 );
 
 
@@ -143,7 +144,7 @@ var listIndexOfFirstTest = {
     }
 };
 annotate(listIndexOfFirstTest).with(
-    annotation("Test").params("List indexOfFirst test")
+    test().name("List indexOfFirst test")
 );
 
 
@@ -196,7 +197,7 @@ var listIndexOfLastTest = {
     }
 };
 annotate(listIndexOfLastTest).with(
-    annotation("Test").params("List indexOfLast test")
+    test().name("List indexOfLast test")
 );
 
 
@@ -263,7 +264,7 @@ var listRemoveTest = {
     }
 };
 annotate(listRemoveTest).with(
-    annotation("Test").params("List remove test")
+    test().name("List remove test")
 );
 
 
@@ -311,7 +312,7 @@ var listRemoveAtTest = {
     }
 };
 annotate(listRemoveAtTest).with(
-    annotation("Test").params("List removeAt test")
+    test().name("List removeAt test")
 );
 
 
@@ -373,7 +374,7 @@ var listAddEqualObjectsTest = {
     }
 };
 annotate(listAddEqualObjectsTest).with(
-    annotation("Test").params("List add equal objects test")
+    test().name("List add equal objects test")
 );
 
 
@@ -425,5 +426,83 @@ var listAddNonEqualObjectsWithSameHashCodesTest = {
     }
 };
 annotate(listAddNonEqualObjectsWithSameHashCodesTest).with(
-    annotation("Test").params("List add non equal objects that have the same hashCodes test")
+    test().name("List add non equal objects that have the same hashCodes test")
+);
+
+
+/**
+ *
+ */
+var listRemoveEqualObjectsTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        var someOffset = 0;
+        var _context = this;
+        this.hashCodeCount = 123;
+        this.NewClass = Class.extend(Obj, {
+            _constructor: function() {
+                this._super();
+                this.someOffset = someOffset++;
+            },
+
+            equals: function(value) {
+                if (Class.doesExtend(value, _context.NewClass)) {
+
+                    //NOTE BRN: This should always return true for instances of this class
+
+                    return this.getValue() === value.getValue();
+                }
+            },
+            getValue: function() {
+                return 123;
+            },
+
+            // NOTE BRN: The rules of equality require that equal objects return equal hashcodes
+
+            hashCode: function() {
+                return 123;
+            }
+        });
+        this.instance1 = new this.NewClass();
+        this.instance2  = new this.NewClass();
+        this.list = new List();
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        test.assertFalse(this.instance1 === this.instance2,
+            "Assert instance1 does not exactly equal instance2 according to js");
+        this.list.add(this.instance1);
+        test.assertEqual(this.list.contains(this.instance1), true,
+            "Assert that list contains instance1 after adding instance1");
+        test.assertEqual(this.list.indexOfFirst(this.instance1), 0,
+            "Assert that first index of instance1 is 0");
+        test.assertEqual(this.list.contains(this.instance2), true,
+            "Assert that list contains instance2 after adding instance1 (since instance 1 and instance 2 are equal)");
+        test.assertEqual(this.list.indexOfFirst(this.instance2), 0,
+            "Assert that index of instance2 is 0");
+        test.assertEqual(this.list.getCount(), 1,
+            "Assert list count is 1 after adding instance1");
+
+        this.list.remove(this.instance2);
+        test.assertEqual(this.list.contains(this.instance1), false,
+            "Assert that list does not contain instance1 after removing instance2");
+        test.assertEqual(this.list.indexOfFirst(this.instance1), -1,
+            "Assert that index of instance1 is -1");
+        test.assertEqual(this.list.contains(this.instance2), false,
+            "Assert that list does not contain instance2 after removing instance2");
+        test.assertEqual(this.list.indexOfFirst(this.instance2), -1,
+            "Assert that index of instance2 is -1");
+        test.assertEqual(this.list.getCount(), 0,
+            "Assert list count is 0 after removing instance2");
+    }
+};
+annotate(listRemoveEqualObjectsTest).with(
+    test().name("List add equal objects test")
 );

@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var Interface = require('../../lib/Interface');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeUtil = require('../../lib/TypeUtil');
 
 
@@ -12,7 +13,7 @@ var TypeUtil = require('../../lib/TypeUtil');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -50,5 +51,5 @@ var declareTest = {
     }
 };
 annotate(declareTest).with(
-    annotation("Test").params("Interface declare test")
+    test().name("Interface declare test")
 );

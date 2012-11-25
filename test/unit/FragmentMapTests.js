@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var FragmentMap = require('../../lib/FragmentMap');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var FragmentMap = require('../../lib/FragmentMap');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ var fragmentMapSimplePutFragmentGetFragmentTest = {
     }
 };
 annotate(fragmentMapSimplePutFragmentGetFragmentTest).with(
-    annotation("Test").params("FragmentMap simple putFragment/getFragment test")
+    test().name("FragmentMap simple putFragment/getFragment test")
 );
 
 
@@ -109,5 +110,5 @@ var fragmentMapPutFragmentsGetTest = {
     }
 };
 annotate(fragmentMapPutFragmentsGetTest).with(
-    annotation("Test").params("FragmentMap putFragments/get test")
+    test().name("FragmentMap putFragments/get test")
 );

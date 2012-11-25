@@ -5,6 +5,7 @@
 var Annotate = require('../../../lib/Annotate');
 var Directory = require('../../../lib/compiler/Directory');
 var File = require('../../../lib/compiler/File');
+var TestAnnotation = require('../../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var File = require('../../../lib/compiler/File');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -44,7 +45,7 @@ var fileInstantiationTest = {
     }
 };
 annotate(fileInstantiationTest).with(
-    annotation("Test").params("File instantiation test")
+    test().name("File instantiation test")
 );
 
 
@@ -111,5 +112,5 @@ var fileGetFilePathToAnotherFileTest = {
     }
 };
 annotate(fileGetFilePathToAnotherFileTest).with(
-    annotation("Test").params("File getFilePathToAnotherFile test")
+    test().name("File getFilePathToAnotherFile test")
 );

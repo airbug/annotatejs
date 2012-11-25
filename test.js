@@ -6,6 +6,7 @@ var fs = require('fs');
 
 var BugUnit = require('./lib/unit/BugUnit');
 var List = require('./lib/List');
+var TestScan = require('./lib/unit/TestScan');
 
 
 //-------------------------------------------------------------------------------
@@ -16,7 +17,8 @@ var List = require('./lib/List');
 var projectDir = process.cwd();
 
 requireModulesFromDirectory(projectDir + "/test");
-
+var testScan = new TestScan();
+testScan.scan();
 var reportCard = BugUnit.runTests(true);
 
 console.log("Number of PASSED tests: " + reportCard.numberPassedTests());

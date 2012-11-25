@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var Alert = require('../../lib/Alert');
 var Class = require('../../lib/Class');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var Class = require('../../lib/Class');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -55,5 +56,5 @@ var alertInstantiationTest = {
     }
 };
 annotate(alertInstantiationTest).with(
-    annotation("Test").params("Alert instantiation test")
+    test().name("Alert instantiation test")
 );

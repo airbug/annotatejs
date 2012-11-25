@@ -6,6 +6,7 @@ var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Collection = require('../../lib/Collection');
 var Obj = require('../../lib/Obj');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var Obj = require('../../lib/Obj');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -64,7 +65,7 @@ var collectionAddTest = {
     }
 };
 annotate(collectionAddTest).with(
-    annotation("Test").params("Collection add test")
+    test().name("Collection add test")
 );
 
 
@@ -97,7 +98,7 @@ var collectionGetValueArrayTest = {
     }
 };
 annotate(collectionGetValueArrayTest).with(
-    annotation("Test").params("Collection getValueArray test")
+    test().name("Collection getValueArray test")
 );
 
 
@@ -159,7 +160,7 @@ var collectionAddEqualObjectsTest = {
     }
 };
 annotate(collectionAddEqualObjectsTest).with(
-    annotation("Test").params("Collection add equal objects test")
+    test().name("Collection add equal objects test")
 );
 
 
@@ -211,7 +212,7 @@ var collectionAddNonEqualObjectsWithSameHashCodesTest = {
     }
 };
 annotate(collectionAddNonEqualObjectsWithSameHashCodesTest).with(
-    annotation("Test").params("Collection add non equal objects that have the same hashCodes test")
+    test().name("Collection add non equal objects that have the same hashCodes test")
 );
 
 /**
@@ -288,7 +289,7 @@ var collectionAddAndRemoveDifferentValuesTest = {
     }
 };
 annotate(collectionAddAndRemoveDifferentValuesTest).with(
-    annotation("Test").params("Collection add and remove different values test")
+    test().name("Collection add and remove different values test")
 );
 
 
@@ -349,5 +350,5 @@ var collectionAddAndRemoveSameValuesTest = {
     }
 };
 annotate(collectionAddAndRemoveSameValuesTest).with(
-    annotation("Test").params("Collection add and remove same values test")
+    test().name("Collection add and remove same values test")
 );

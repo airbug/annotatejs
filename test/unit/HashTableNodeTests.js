@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var HashTableNode = require('../../lib/HashTableNode');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeUtil = require('../../lib/TypeUtil');
 
 
@@ -12,7 +13,7 @@ var TypeUtil = require('../../lib/TypeUtil');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -43,7 +44,7 @@ var hashTableNodeInstantiationTest = {
     }
 };
 annotate(hashTableNodeInstantiationTest).with(
-    annotation("Test").params("HashTableNode - instantiation test")
+    test().name("HashTableNode - instantiation test")
 );
 
 
@@ -82,5 +83,5 @@ var hashTableNodeGetKeyArrayTest = {
     }
 };
 annotate(hashTableNodeGetKeyArrayTest).with(
-    annotation("Test").params("HashTableNode - getKeyArray test")
+    test().name("HashTableNode - getKeyArray test")
 );

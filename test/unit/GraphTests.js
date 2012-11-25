@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Graph = require('../../lib/Graph');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var Graph = require('../../lib/Graph');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -42,5 +43,5 @@ var graphInstantiationTest = {
     }
 };
 annotate(graphInstantiationTest).with(
-    annotation("Test").params("Graph instantiation test")
+    test().name("Graph instantiation test")
 );

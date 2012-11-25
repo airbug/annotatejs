@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var Obj = require('../../lib/Obj');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeUtil = require('../../lib/TypeUtil');
 
 
@@ -12,7 +13,7 @@ var TypeUtil = require('../../lib/TypeUtil');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ var objInstantiationTest = {
     }
 };
 annotate(objInstantiationTest).with(
-    annotation("Test").params("Obj instantiation test")
+    test().name("Obj instantiation test")
 );
 
 
@@ -90,7 +91,7 @@ var objHashCodeTest = {
     }
 };
 annotate(objHashCodeTest).with(
-    annotation("Test").params("Obj hashCode test")
+    test().name("Obj hashCode test")
 );
 
 
@@ -139,5 +140,5 @@ var objEqualsTest = {
     }
 };
 annotate(objEqualsTest).with(
-    annotation("Test").params("Obj equals test")
+    test().name("Obj equals test")
 );

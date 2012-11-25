@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var RobinNode = require('../../lib/RobinNode');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var RobinNode = require('../../lib/RobinNode');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -45,5 +46,5 @@ var robinNodeInstantiationTest = {
     }
 };
 annotate(robinNodeInstantiationTest).with(
-    annotation("Test").params("RobinNode instantiation test")
+    test().name("RobinNode instantiation test")
 );

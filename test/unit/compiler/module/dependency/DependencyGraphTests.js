@@ -7,6 +7,7 @@ var Class = require('../../../../../lib/Class');
 var DependencyGraph = require('../../../../../lib/compiler/module/dependency/DependencyGraph');
 var List = require('../../../../../lib/List');
 var Set = require('../../../../../lib/Set');
+var TestAnnotation = require('../../../../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -14,7 +15,7 @@ var Set = require('../../../../../lib/Set');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -44,7 +45,7 @@ var dependencyGraphInstantiationTest = {
     }
 };
 annotate(dependencyGraphInstantiationTest).with(
-    annotation('Test').params("DependencyGraph instantiation test")
+    test().name("DependencyGraph instantiation test")
 );
 
 
@@ -163,7 +164,7 @@ var dependencyGraphNodeADependsOnNodeBAndCAndNodeBDependsOnNodeCTest = {
     }
 };
 annotate(dependencyGraphNodeADependsOnNodeBAndCAndNodeBDependsOnNodeCTest).with(
-    annotation('Test').params("DependencyGraph node A depends on node B and C AND node B depends on node C test")
+    test().name("DependencyGraph node A depends on node B and C AND node B depends on node C test")
 );
 
 /**
@@ -210,5 +211,5 @@ var dependencyGraphGetScriptExportNameTest = {
     }
 };
 annotate(dependencyGraphGetScriptExportNameTest).with(
-    annotation('Test').params("DependencyGraph getScriptExportName test")
+    test().name("DependencyGraph getScriptExportName test")
 );

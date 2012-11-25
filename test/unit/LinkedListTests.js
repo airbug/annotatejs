@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var LinkedList = require('../../lib/LinkedList');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var LinkedList = require('../../lib/LinkedList');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -39,7 +40,7 @@ var linkedListGetCountTest = {
     }
 };
 annotate(linkedListGetCountTest).with(
-    annotation("Test").params("LinkedList getCount test")
+    test().name("LinkedList getCount test")
 );
 
 
@@ -73,5 +74,5 @@ var linkedListAddFirstTest = {
     }
 };
 annotate(linkedListAddFirstTest).with(
-    annotation("Test").params("LinkedList addFront test")
+    test().name("LinkedList addFront test")
 );

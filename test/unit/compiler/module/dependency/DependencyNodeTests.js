@@ -5,6 +5,7 @@
 var Annotate = require('../../../../../lib/Annotate');
 var Class = require('../../../../../lib/Class');
 var DependencyNode = require('../../../../../lib/compiler/module/dependency/DependencyNode');
+var TestAnnotation = require('../../../../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var DependencyNode = require('../../../../../lib/compiler/module/dependency/Depe
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -42,5 +43,5 @@ var dependencyNodeInstantiationTest = {
     }
 };
 annotate(dependencyNodeInstantiationTest).with(
-    annotation("Test").params("DependencyNode instantiation test")
+    test().name("DependencyNode instantiation test")
 );

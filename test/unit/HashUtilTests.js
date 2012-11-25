@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var HashUtil = require('../../lib/HashUtil');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 
 
@@ -12,7 +13,7 @@ var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -61,5 +62,5 @@ var hashRepeatTest = {
     }
 };
 annotate(hashRepeatTest).with(
-    annotation("Test").params("Hash repeat test")
+    test().name("Hash repeat test")
 );

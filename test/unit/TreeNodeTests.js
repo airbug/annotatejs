@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------------------
 
 var Annotate = require('../../lib/Annotate');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TreeNode = require('../../lib/TreeNode');
 
 
@@ -11,7 +12,7 @@ var TreeNode = require('../../lib/TreeNode');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -49,5 +50,5 @@ var instantiateTreeNodeTest = {
     }
 };
 annotate(instantiateTreeNodeTest).with(
-    annotation("Test").params("TreeNode instantiation test")
+    test().name("TreeNode instantiation test")
 );

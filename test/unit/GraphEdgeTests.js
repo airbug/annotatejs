@@ -6,6 +6,7 @@ var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var GraphEdge = require('../../lib/GraphEdge');
 var GraphNode = require('../../lib/GraphNode');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var GraphNode = require('../../lib/GraphNode');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -47,7 +48,7 @@ var graphEdgeInstantiationWithGoodArgumentsTest = {
     }
 };
 annotate(graphEdgeInstantiationWithGoodArgumentsTest).with(
-    annotation("Test").params("GraphEdge instantiation test")
+    test().name("GraphEdge instantiation test")
 );
 
 
@@ -94,7 +95,7 @@ var graphEdgeEqualityTest = {
     }
 };
 annotate(graphEdgeEqualityTest).with(
-    annotation("Test").params("GraphEdge equality test")
+    test().name("GraphEdge equality test")
 );
 
 
@@ -124,5 +125,5 @@ var graphNodeHashCodeEqualityTest = {
     }
 };
 annotate(graphNodeHashCodeEqualityTest).with(
-    annotation("Test").params("GraphEdge hash code equality test")
+    test().name("GraphEdge hash code equality test")
 );

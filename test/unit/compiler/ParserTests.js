@@ -6,6 +6,7 @@ var Annotate = require('../../../lib/Annotate');
 var Character = require('../../../lib/compiler/Character');
 var Class = require('../../../lib/Class');
 var Parser = require('../../../lib/compiler/Parser');
+var TestAnnotation = require('../../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var Parser = require('../../../lib/compiler/Parser');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -49,5 +50,5 @@ var generateCharacterListTest = {
     }
 };
 annotate(generateCharacterListTest).with(
-    annotation("Test").params("Generate character list test")
+    test().name("Generate character list test")
 );

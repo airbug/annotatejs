@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------------------
 
 var Annotate = require('../../lib/Annotate');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var Tree = require('../../lib/Tree');
 var TreeNode = require('../../lib/TreeNode');
 
@@ -12,7 +13,7 @@ var TreeNode = require('../../lib/TreeNode');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -77,5 +78,5 @@ var treeWalkOrderTest = {
     }
 };
 annotate(treeWalkOrderTest).with(
-    annotation("Test").params("Tree walk order test")
+    test().name("Tree walk order test")
 );

@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var LinkedList = require('../../lib/LinkedList');
 var LinkedListIterator = require('../../lib/LinkedListIterator');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var LinkedListIterator = require('../../lib/LinkedListIterator');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -52,5 +53,5 @@ var linkedListIteratorPeekNextTest = {
     }
 };
 annotate(linkedListIteratorPeekNextTest).with(
-    annotation("Test").params("LinkedListIterator peekNext test")
+    test().name("LinkedListIterator peekNext test")
 );

@@ -5,6 +5,7 @@
 var Annotate = require('../../../lib/Annotate');
 var Parser = require('../../../lib/compiler/Parser');
 var ParserUtil = require('../../../lib/compiler/ParserUtil');
+var TestAnnotation = require('../../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var ParserUtil = require('../../../lib/compiler/ParserUtil');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -88,7 +89,7 @@ var parseIdentifierTokenTest = {
     }
 };
 annotate(parseIdentifierTokenTest).with(
-    annotation("Test").params("Parse identifier token test")
+    test().name("Parse identifier token test")
 );
 
 
@@ -155,5 +156,5 @@ var parseStringTokenTest = {
     }
 };
 annotate(parseStringTokenTest).with(
-    annotation("Test").params("Parse string token test")
+    test().name("Parse string token test")
 );

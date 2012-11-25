@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var PublisherSubscription = require('../../lib/PublisherSubscription');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var PublisherSubscription = require('../../lib/PublisherSubscription');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ var subscriptionEqualityTest = {
     }
 };
 annotate(subscriptionEqualityTest).with(
-    annotation("Test").params("Subscription equality test")
+    test().name("Subscription equality test")
 );
 
 
@@ -82,5 +83,5 @@ var subscriptionHashCodeEqualityTest = {
     }
 };
 annotate(subscriptionHashCodeEqualityTest).with(
-    annotation("Test").params("Subscription hash code equality test")
+    test().name("Subscription hash code equality test")
 );

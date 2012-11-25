@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var EventListener = require('../../lib/EventListener');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var EventListener = require('../../lib/EventListener');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -44,7 +45,7 @@ var eventListenerInstantiationTest = {
     }
 };
 annotate(eventListenerInstantiationTest).with(
-    annotation("Test").params("EventListener instantiation test")
+    test().name("EventListener instantiation test")
 );
 
 
@@ -91,7 +92,7 @@ var eventListenerEqualityTest = {
     }
 };
 annotate(eventListenerEqualityTest).with(
-    annotation("Test").params("EventListener equality test")
+    test().name("EventListener equality test")
 );
 
 
@@ -121,7 +122,7 @@ var eventListenerHashCodeEqualityTest = {
     }
 };
 annotate(eventListenerHashCodeEqualityTest).with(
-    annotation("Test").params("EventListener hash code equality test")
+    test().name("EventListener hash code equality test")
 );
 
 

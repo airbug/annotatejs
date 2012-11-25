@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var Publisher = require('../../lib/Publisher');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var Publisher = require('../../lib/Publisher');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -59,5 +60,5 @@ var publisherSubscribePublishTest = {
     }
 };
 annotate(publisherSubscribePublishTest).with(
-    annotation("Test").params("Publisher subscribe and publish test")
+    test().name("Publisher subscribe and publish test")
 );

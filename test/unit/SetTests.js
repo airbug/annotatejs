@@ -6,6 +6,7 @@ var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Obj = require('../../lib/Obj');
 var Set = require('../../lib/Set');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var Set = require('../../lib/Set');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -55,7 +56,7 @@ var setAddTest = {
     }
 };
 annotate(setAddTest).with(
-    annotation("Test").params("Set add test")
+    test().name("Set add test")
 );
 
 
@@ -90,7 +91,7 @@ var setAddRepeatTest = {
     }
 };
 annotate(setAddRepeatTest).with(
-    annotation("Test").params("Set add repeat test")
+    test().name("Set add repeat test")
 );
 
 
@@ -140,7 +141,7 @@ var setAddEqualObjectsTest = {
     }
 };
 annotate(setAddEqualObjectsTest).with(
-    annotation("Test").params("Set add equal objects test")
+    test().name("Set add equal objects test")
 );
 
 
@@ -200,5 +201,5 @@ var setContainsNonEqualObjectsWithSameHashCodesTest = {
     }
 };
 annotate(setContainsNonEqualObjectsWithSameHashCodesTest).with(
-    annotation("Test").params("Set contains non equal objects that have the same hashCodes test")
+    test().name("Set contains non equal objects that have the same hashCodes test")
 );

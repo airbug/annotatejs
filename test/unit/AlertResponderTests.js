@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var AlertResponder = require('../../lib/AlertResponder');
 var Class = require('../../lib/Class');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var Class = require('../../lib/Class');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -46,7 +47,7 @@ var alertResponderInstantiationTest = {
 
 };
 annotate(alertResponderInstantiationTest).with(
-    annotation("Test").params("AlertResponder instantiation test")
+    test().name("AlertResponder instantiation test")
 );
 
 
@@ -93,7 +94,7 @@ var alertResponderEqualityTest = {
     }
 };
 annotate(alertResponderEqualityTest).with(
-    annotation("Test").params("AlertResponder equality test")
+    test().name("AlertResponder equality test")
 );
 
 
@@ -123,7 +124,7 @@ var alertResponderHashCodeEqualityTest = {
     }
 };
 annotate(alertResponderHashCodeEqualityTest).with(
-    annotation("Test").params("AlertResponder hash code equality test")
+    test().name("AlertResponder hash code equality test")
 );
 
 

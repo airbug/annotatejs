@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var RoundRobin = require('../../lib/RoundRobin');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var RoundRobin = require('../../lib/RoundRobin');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -42,7 +43,7 @@ var roundRobinInstantiationTest = {
     }
 };
 annotate(roundRobinInstantiationTest).with(
-    annotation("Test").params("RoundRobin instantiation test")
+    test().name("RoundRobin instantiation test")
 );
 
 
@@ -82,5 +83,5 @@ var roundRobinNextTest = {
     }
 };
 annotate(roundRobinNextTest).with(
-    annotation("Test").params("RoundRobin next() test")
+    test().name("RoundRobin next() test")
 );

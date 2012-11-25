@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var EventDispatcher = require('../../lib/EventDispatcher');
 var Event = require('../../lib/Event');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var Event = require('../../lib/Event');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ var eventDispatcherInstantiationTest = {
     }
 };
 annotate(eventDispatcherInstantiationTest).with(
-    annotation("Test").params("EventDispatcher instantiation test")
+    test().name("EventDispatcher instantiation test")
 );
 
 
@@ -100,7 +101,7 @@ var eventDispatcherSimpleAddEventListenerDispatchEventTest = {
     }
 };
 annotate(eventDispatcherSimpleAddEventListenerDispatchEventTest).with(
-    annotation("Test").params("EventDispatcher simple add event listener and dispatch event test")
+    test().name("EventDispatcher simple add event listener and dispatch event test")
 );
 
 
@@ -143,7 +144,7 @@ var eventDispatcherAddAnonymousEventListenerDispatchEventTest = {
     }
 };
 annotate(eventDispatcherAddAnonymousEventListenerDispatchEventTest).with(
-    annotation("Test").params("EventDispatcher add anonymous event listener and dispatch event test")
+    test().name("EventDispatcher add anonymous event listener and dispatch event test")
 );
 
 
@@ -190,7 +191,7 @@ var eventDispatcherDispatchEventBubblesFalseTest = {
     }
 };
 annotate(eventDispatcherDispatchEventBubblesFalseTest).with(
-    annotation("Test").params("EventDispatcher dispatch event with bubbles false test")
+    test().name("EventDispatcher dispatch event with bubbles false test")
 );
 
 
@@ -237,7 +238,7 @@ var eventDispatcherDispatchEventBubblesTrueTest = {
     }
 };
 annotate(eventDispatcherDispatchEventBubblesTrueTest).with(
-    annotation("Test").params("EventDispatcher dispatch event with bubbles true test")
+    test().name("EventDispatcher dispatch event with bubbles true test")
 );
 
 
@@ -286,5 +287,48 @@ var eventDispatcherDispatchEventStopPropagationTest = {
     }
 };
 annotate(eventDispatcherDispatchEventStopPropagationTest).with(
-    annotation("Test").params("EventDispatcher dispatch event stopPropagation test")
+    test().name("EventDispatcher dispatch event stopPropagation test")
+);
+
+
+/**
+ * This tests
+ * 1) Adding an event listener
+ * 2) That hasEventListener returns true after adding an event listener
+ * 3) Removing the event listener
+ * 4) That hasEventListener returns false after removing the event listener
+ */
+var eventDispatcherSimpleAddAndRemoveEventListenerTest = {
+
+    // Setup Test
+    //-------------------------------------------------------------------------------
+
+    setup: function() {
+        this.eventDispatcher = new EventDispatcher();
+        this.testEventType = "testEventType";
+        this.testListenerContext = {};
+        this.testListenerFunction = function(event) {};
+    },
+
+
+    // Run Test
+    //-------------------------------------------------------------------------------
+
+    test: function(test) {
+        this.eventDispatcher.addEventListener(this.testEventType, this.testListenerFunction, this.testListenerContext);
+        var hasListenerAfterAdd = this.eventDispatcher.hasEventListener(this.testEventType, this.testListenerFunction,
+            this.testListenerContext);
+        test.assertTrue(hasListenerAfterAdd,
+            "Assert hasEventListener returns true after adding an event listener.");
+
+        this.eventDispatcher.removeEventListener(this.testEventType, this.testListenerFunction,
+            this.testListenerContext);
+        var hasListenerAfterRemove = this.eventDispatcher.hasEventListener(this.testEventType,
+            this.testListenerFunction, this.testListenerContext);
+        test.assertFalse(hasListenerAfterRemove,
+            "Assert hasEventListener returns false after removing the event listener.");
+    }
+};
+annotate(eventDispatcherSimpleAddAndRemoveEventListenerTest).with(
+    test().name("EventDispatcher simple add and remove event listener test")
 );

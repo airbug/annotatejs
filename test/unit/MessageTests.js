@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var Message = require('../../lib/Message');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var Message = require('../../lib/Message');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -46,5 +47,5 @@ var instantiateMessageTest = {
     }
 };
 annotate(instantiateMessageTest).with(
-    annotation("Test").params("Message instantiation test")
+    test().name("Message instantiation test")
 );

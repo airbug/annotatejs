@@ -3,6 +3,7 @@
 //-------------------------------------------------------------------------------
 
 var Annotate = require('../../lib/Annotate');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeUtil = require('../../lib/TypeUtil');
 var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 
@@ -12,7 +13,7 @@ var TypeValueSetsHelper = require('../helper/TypeValueSetsHelper');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -40,7 +41,7 @@ var typeComparisonTest = {
 
 };
 annotate(typeComparisonTest).with(
-    annotation("Test").params("TypeUtil Comparison Test")
+    test().name("TypeUtil Comparison Test")
 );
 
 var TypeUtilTests = {

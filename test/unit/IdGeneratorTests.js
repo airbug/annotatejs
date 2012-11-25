@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var IdGenerator = require('../../lib/IdGenerator');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var IdGenerator = require('../../lib/IdGenerator');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -48,5 +49,5 @@ var generateIdTest = {
     }
 };
 annotate(generateIdTest).with(
-    annotation("Test").params("IdGenerator generate id test")
+    test().name("IdGenerator generate id test")
 );

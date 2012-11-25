@@ -6,6 +6,7 @@ var Annotate = require('../../lib/Annotate');
 var Class = require('../../lib/Class');
 var Collection = require('../../lib/Collection');
 var Map = require('../../lib/Map');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -13,7 +14,7 @@ var Map = require('../../lib/Map');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -51,7 +52,7 @@ var mapSimplePutContainsValueTest = {
     }
 };
 annotate(mapSimplePutContainsValueTest).with(
-    annotation("Test").params("Map - simple put/containsValue test")
+    test().name("Map - simple put/containsValue test")
 );
 
 
@@ -80,7 +81,7 @@ var mapSimplePutGetTest = {
     }
 };
 annotate(mapSimplePutGetTest).with(
-    annotation("Test").params("Map - simple put/get test")
+    test().name("Map - simple put/get test")
 );
 
 
@@ -111,7 +112,7 @@ var mapGetKeyCollectionOnEmptyMapTest = {
     }
 };
 annotate(mapGetKeyCollectionOnEmptyMapTest).with(
-    annotation("Test").params("Map - getKeyCollection called on an empty Map test")
+    test().name("Map - getKeyCollection called on an empty Map test")
 );
 
 
@@ -157,7 +158,7 @@ var mapGetKeyCollectionTest = {
     }
 };
 annotate(mapGetKeyCollectionTest).with(
-    annotation("Test").params("Map - getKeyCollection test")
+    test().name("Map - getKeyCollection test")
 );
 
 
@@ -215,7 +216,7 @@ var mapDataTypeKeyTest = {
     }
 };
 annotate(mapDataTypeKeyTest).with(
-    annotation("Test").params("Map - data type key test")
+    test().name("Map - data type key test")
 );
 
 //TODO BRN: Add a test for native javascript object names such as "constructor" and "hasOwnProperty"

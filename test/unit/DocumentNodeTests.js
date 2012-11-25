@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var DocumentNode = require('../../lib/DocumentNode');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var DocumentNode = require('../../lib/DocumentNode');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ var documentNodeInstantiationTest = {
     }
 };
 annotate(documentNodeInstantiationTest).with(
-    annotation("Test").params("DocumentNode instantiation test")
+    test().name("DocumentNode instantiation test")
 );
 
 
@@ -93,5 +94,5 @@ var documentNodeAddChildNodeTest = {
     }
 };
 annotate(documentNodeAddChildNodeTest).with(
-    annotation("Test").params("DocumentNode addChild test")
+    test().name("DocumentNode addChild test")
 );

@@ -4,6 +4,7 @@
 
 var Annotate = require('../../lib/Annotate');
 var Event = require('../../lib/Event');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -11,7 +12,7 @@ var Event = require('../../lib/Event');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -52,5 +53,5 @@ var eventInstantiationTest = {
     }
 };
 annotate(eventInstantiationTest).with(
-    annotation("Test").params("Event instantiation test")
+    test().name("Event instantiation test")
 );

@@ -7,6 +7,7 @@ var Class = require('../../lib/Class');
 var IHashCode = require('../../lib/IHashCode');
 var Interface = require('../../lib/Interface');
 var Obj = require('../../lib/Obj');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 var TypeUtil = require('../../lib/TypeUtil');
 
 
@@ -15,7 +16,7 @@ var TypeUtil = require('../../lib/TypeUtil');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -62,7 +63,7 @@ var classExtendObjTest = {
     }
 };
 annotate(classExtendObjTest).with(
-    annotation("Test").params("Class extend Obj test")
+    test().name("Class extend Obj test")
 );
 
 
@@ -119,7 +120,7 @@ var classExtendTest = {
     }
 };
 annotate(classExtendTest).with(
-    annotation("Test").params("Class extend test")
+    test().name("Class extend test")
 );
 
 
@@ -175,7 +176,7 @@ var classImplementTest = {
     }
 };
 annotate(classImplementTest).with(
-    annotation("Test").params("Class implement test")
+    test().name("Class implement test")
 );
 
 
@@ -208,7 +209,10 @@ var classDoesImplementTest = {
             [],
             function() {},
             "some string",
-            12345
+            12345,
+            null,
+            undefined,
+            0
         ];
     },
 
@@ -227,7 +231,7 @@ var classDoesImplementTest = {
     }
 };
 annotate(classDoesImplementTest).with(
-    annotation("Test").params("Class doesImplement test")
+    test().name("Class doesImplement test")
 );
 
 /**
@@ -261,5 +265,5 @@ var classConstructorTest = {
     }
 };
 annotate(classConstructorTest).with(
-    annotation("Test").params("Class constructor test")
+    test().name("Class constructor test")
 );

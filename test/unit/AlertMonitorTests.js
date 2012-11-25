@@ -5,6 +5,7 @@
 var Annotate = require('../../lib/Annotate');
 var AlertMonitor = require('../../lib/AlertMonitor');
 var Class = require('../../lib/Class');
+var TestAnnotation = require('../../lib/unit/TestAnnotation');
 
 
 //-------------------------------------------------------------------------------
@@ -12,7 +13,7 @@ var Class = require('../../lib/Class');
 //-------------------------------------------------------------------------------
 
 var annotate = Annotate.annotate;
-var annotation = Annotate.annotation;
+var test = TestAnnotation.test;
 
 
 //-------------------------------------------------------------------------------
@@ -47,7 +48,7 @@ var alertMonitorInstantiationTest = {
     }
 };
 annotate(alertMonitorInstantiationTest).with(
-    annotation("Test").params("AlertMonitor instantiation test")
+    test().name("AlertMonitor instantiation test")
 );
 
 /**
@@ -99,5 +100,5 @@ var alertMonitorAddResponderAlertResponseTest = {
     }
 };
 annotate(alertMonitorAddResponderAlertResponseTest).with(
-    annotation("Test").params("AlertMonitor addResponder/alertResponse test")
+    test().name("AlertMonitor addResponder/alertResponse test")
 );
